@@ -1,0 +1,32 @@
+node_modules
+dist
+.DS_Store
+server/public
+vite.config.ts.*
+*.tar.gz
+.env
+*.env.local
+
+# Large source/working files that exceed GitHub's 100MB limit
+*.psd
+*.ai
+*.pdf
+*.mp4
+*.mov
+*.avi
+*.fla
+*.zip
+*.gif
+Banner Ads/
+E-blast/
+Flyer/
+Magazine Work/
+Packaging/
+Social_Posts/
+Video/
+New_Samples/
+attached_assets/
+.local/
+.replit
+client/public/portfolio/thumbnails/
+push-to-github.bat
