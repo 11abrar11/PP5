@@ -51,9 +51,10 @@ export async function sendEmail(options: SendEmailOptions): Promise<void> {
         secure,
         requireTLS: port === 587,
         auth: { user, pass },
-        connectionTimeout: 20000, // Increase to 20s
+        connectionTimeout: 20000,
         greetingTimeout: 20000,
         socketTimeout: 30000,
+        family: 4, // Force IPv4 to avoid ENETUNREACH on IPv6
         tls: {
             rejectUnauthorized: false,
         },
