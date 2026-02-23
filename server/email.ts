@@ -45,19 +45,31 @@ export async function sendEmail(options: SendEmailOptions): Promise<void> {
         );
     }
 
-    const transporter = nodemailer.createTransport({
+    const transporterOptions: any = {
         host,
         port,
         secure,
         requireTLS: port === 587,
         auth: { user, pass },
-        connectionTimeout: 10000, // 10 seconds timeout
-        greetingTimeout: 10000,
-        socketTimeout: 20000,
+        connectionTimeout: 20000, // Increase to 20s
+        greetingTimeout: 20000,
+        socketTimeout: 30000,
         tls: {
             rejectUnauthorized: false,
         },
-    });
+    };
+
+    // Use built-in 'gmail' service if host is Gmail
+    // This is often more reliable on cloud providers
+    if (host.includes("gmail.com")) {
+        delete transporterOptions.host;
+        delete transporterOptions.port;
+        delete transporterOptions.secure;
+        delete transporterOptions.requireTLS; // Not needed for service
+        transporterOptions.service = "gmail";
+    }
+
+    const transporter = nodemailer.createTransport(transporterOptions);
 
     await transporter.sendMail({
         from: options.from,
