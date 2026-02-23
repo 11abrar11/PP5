@@ -23,7 +23,12 @@ export interface SendEmailOptions {
 export async function sendEmail(options: SendEmailOptions): Promise<void> {
     const host = process.env.SMTP_HOST;
     const port = parseInt(process.env.SMTP_PORT || "465", 10);
-    const secure = process.env.SMTP_SECURE !== "false"; // default true for port 465
+    // Automatically determine 'secure' based on port if not explicitly set
+    // Port 465 is usually SSL (secure: true), Port 587 is STARTTLS (secure: false)
+    const secure = process.env.SMTP_SECURE
+        ? process.env.SMTP_SECURE !== "false"
+        : port === 465;
+
     const user = process.env.SMTP_USER;
     const pass = process.env.SMTP_PASS;
 
@@ -43,11 +48,14 @@ export async function sendEmail(options: SendEmailOptions): Promise<void> {
     const transporter = nodemailer.createTransport({
         host,
         port,
-        secure,           // false for port 587 (STARTTLS), true for port 465 (SSL)
-        requireTLS: !secure, // force STARTTLS upgrade on port 587
+        secure,
+        requireTLS: port === 587,
         auth: { user, pass },
+        connectionTimeout: 10000, // 10 seconds timeout
+        greetingTimeout: 10000,
+        socketTimeout: 20000,
         tls: {
-            rejectUnauthorized: false, // allow self-signed certs (common on shared hosting)
+            rejectUnauthorized: false,
         },
     });
 
