@@ -140,9 +140,14 @@ export async function registerRoutes(
 
         return res.status(201).json({ success: true, message: "Inquiry received and email sent." });
       } catch (err: any) {
-        console.error("❌ Contact form error:", err.message);
+        console.error("❌ Contact form error detailed:", {
+          message: err.message,
+          stack: err.stack,
+          code: err.code,
+          command: err.command
+        });
         return res.status(500).json({
-          message: err.message || "Failed to process inquiry. Please try again.",
+          message: `Server Error: ${err.message}`,
         });
       }
     }

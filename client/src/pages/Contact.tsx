@@ -74,6 +74,7 @@ const contactInfo = [
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function Contact() {
   const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [attachedFile, setAttachedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -103,6 +104,7 @@ export default function Contact() {
 
   const onSubmit = async (data: ContactFormData) => {
     setStatus("sending");
+    setErrorMessage(null);
     try {
       // Use FormData so the file attachment is sent as multipart/form-data
       const formData = new FormData();
@@ -136,6 +138,7 @@ export default function Contact() {
       setAttachedFile(null);
     } catch (err: any) {
       console.error("Contact form error:", err);
+      setErrorMessage(err.message || "Failed to send message. Please try again.");
       setStatus("error");
     }
   };
@@ -248,7 +251,10 @@ export default function Contact() {
                   <div>
                     <p className="font-bold text-red-800">Something went wrong</p>
                     <p className="text-red-700 text-sm mt-1">
-                      Please try again or email us at{" "}
+                      {errorMessage}
+                    </p>
+                    <p className="text-red-500 text-xs mt-2">
+                      If the issue persists, email us at{" "}
                       <a
                         href="mailto:support@pp5mediasolutions.com"
                         className="underline"
