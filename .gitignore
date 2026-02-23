@@ -10,13 +10,12 @@ vite.config.ts.*
 # Large source/working files that exceed GitHub's 100MB limit
 *.psd
 *.ai
-*.pdf
-*.mp4
+*.fla
 *.mov
 *.avi
-*.fla
 *.zip
-*.gif
+
+# Block standard files if they are in these specific root folders
 Banner Ads/
 E-blast/
 Flyer/
@@ -26,6 +25,14 @@ Social_Posts/
 Video/
 New_Samples/
 attached_assets/
+
+# ALWAYS allow optimized assets for the website
+!client/public/**/*.mp4
+!client/public/**/*.pdf
+!client/public/**/*.gif
+!client/public/**/*.jpg
+!client/public/**/*.png
+!client/public/**/*.webp
 .local/
 .replit
 client/public/portfolio/thumbnails/
