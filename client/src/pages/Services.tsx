@@ -18,7 +18,10 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-// ─── Static rich-content data ───────────────────────────────────────────────
+/**
+ * Static Rich Content Data
+ * Stores the deep marketing copy and icons for each service category.
+ */
 const servicesData = [
   {
     id: "design-retainership",
@@ -154,7 +157,10 @@ const servicesData = [
 
 type ServiceData = (typeof servicesData)[number];
 
-// ─── Service Detail Modal ────────────────────────────────────────────────────
+/**
+ * Service Modal Component
+ * Displays the full details of a specific service in a premium popup.
+ */
 function ServiceModal({
   service,
   onClose,
@@ -182,7 +188,7 @@ function ServiceModal({
           className="relative w-full max-w-3xl bg-white rounded-3xl overflow-hidden shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Hero strip */}
+          {/* Hero strip (Black header area) */}
           <div className="bg-black text-white px-10 pt-14 pb-10 relative overflow-hidden">
             <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary via-transparent to-transparent" />
             <button
@@ -205,9 +211,9 @@ function ServiceModal({
             </p>
           </div>
 
-          {/* Body */}
+          {/* Modal Content Body */}
           <div className="px-10 py-10 space-y-8">
-            {/* Primary list */}
+            {/* Service Feature List */}
             <div>
               <h3 className="text-sm font-semibold tracking-widest text-primary uppercase mb-4">
                 {service.listLabel}
@@ -225,7 +231,7 @@ function ServiceModal({
               </ul>
             </div>
 
-            {/* Secondary list (Print & Digital has two) */}
+            {/* Dynamic secondary lists (for Print & Digital category) */}
             {"list2" in service && service.list2 && (
               <div>
                 <h3 className="text-sm font-semibold tracking-widest text-primary uppercase mb-4">
@@ -245,7 +251,7 @@ function ServiceModal({
               </div>
             )}
 
-            {/* Best For */}
+            {/* Industrial target context */}
             <div className="p-6 bg-gray-50 rounded-2xl border border-gray-100">
               <p className="text-xs font-semibold tracking-widest text-primary uppercase mb-2">
                 {(service as any).bestForLabel || "Best For"}
@@ -253,17 +259,17 @@ function ServiceModal({
               <p className="text-gray-700">{service.bestFor}</p>
             </div>
 
-            {/* Impact (Brand Identity) */}
+            {/* Success impact statement */}
             {"impact" in service && service.impact && (
               <div className="p-6 bg-primary/5 border border-primary/20 rounded-2xl">
                 <p className="text-xs font-semibold tracking-widest text-primary uppercase mb-2">
-                  Impact
+                  Strategic Impact
                 </p>
                 <p className="text-gray-700">{(service as any).impact}</p>
               </div>
             )}
 
-            {/* Case snippet (Design Retainership) */}
+            {/* Historical proof/case snippet */}
             {"caseSnippet" in service && service.caseSnippet && (
               <div className="p-6 bg-black rounded-2xl text-white">
                 <p className="text-xs font-semibold tracking-widest text-primary uppercase mb-2">
@@ -275,7 +281,7 @@ function ServiceModal({
               </div>
             )}
 
-            {/* CTA */}
+            {/* Lead conversion CTA */}
             <div className="pt-2">
               <Link href="/contact">
                 <button
@@ -293,7 +299,10 @@ function ServiceModal({
   );
 }
 
-// ─── Service Tile Card ───────────────────────────────────────────────────────
+/**
+ * Service Tile Card Component
+ * A teaser card that tilts in 3D when hovered.
+ */
 function ServiceTile({
   service,
   index,
@@ -323,10 +332,11 @@ function ServiceTile({
           onClick={onClick}
           className="group relative p-8 rounded-2xl bg-white border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10 overflow-hidden text-left w-full h-full"
         >
-          {/* BG accent */}
+          {/* Subtle background decoration */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -mr-8 -mt-8 transition-all group-hover:bg-primary/10 group-hover:scale-110" />
 
           <div className="relative z-10">
+            {/* Rounded icon box */}
             <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
               <Icon size={26} />
             </div>
@@ -349,7 +359,9 @@ function ServiceTile({
   );
 }
 
-// ─── Page ────────────────────────────────────────────────────────────────────
+/**
+ * Main Services Page
+ */
 export default function Services() {
   const [activeService, setActiveService] = useState<ServiceData | null>(null);
 
@@ -385,6 +397,7 @@ export default function Services() {
             </motion.h2>
           </div>
 
+          {/* Interactive cards grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {servicesData.map((service, index) => (
               <ServiceTile
@@ -398,7 +411,7 @@ export default function Services() {
         </div>
       </section>
 
-      {/* ── Contact CTA ── */}
+      {/* ── Dark Contact CTA Strip ── */}
       <section className="py-24 bg-black">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <motion.span
@@ -447,7 +460,7 @@ export default function Services() {
 
       <Footer />
 
-      {/* ── Service Detail Modal ── */}
+      {/* ── Fullscreen Service Detail Modal ── */}
       {activeService && (
         <ServiceModal
           service={activeService}

@@ -14,13 +14,6 @@ export function Footer() {
             <p className="text-gray-400 leading-relaxed">
               At the intersection of design, technology, and strategy, we craft digital experiences that drive growth.
             </p>
-            <div className="flex gap-4">
-              {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
-                <a key={i} href="#" className="p-2 bg-white/5 rounded-full hover:bg-primary hover:text-white transition-colors text-gray-400">
-                  <Icon size={18} />
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Quick Links */}

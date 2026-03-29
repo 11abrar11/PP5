@@ -30,6 +30,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 // ─── Validation Schema ────────────────────────────────────────────────────────
+/**
+ * Form Validation Schema
+ * Using Zod to ensure data integrity before submission.
+ */
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
@@ -71,7 +75,12 @@ const contactInfo = [
   },
 ];
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+/**
+ * Contact Page Component
+ * - Manages the complex multi-input form with file attachments
+ * - Handles API submission for database logging
+ * - Provides a fallback for EmailJS integration
+ */
 export default function Contact() {
   const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -92,31 +101,45 @@ export default function Contact() {
     mode: "onTouched",
   });
 
+  // ── Attachment Handling Logic ──────────────────────────────────────────────
+
+  /**
+   * Processes the selected file for the 'attachment' field.
+   * Ensures only one file is handled at a time for this inquiry.
+   */
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] ?? null;
-    setAttachedFile(file);
+    if (e.target.files?.[0]) {
+      setAttachedFile(e.target.files[0]);
+    }
   };
 
+  /**
+   * Clears the current attachment state.
+   */
   const removeFile = () => {
     setAttachedFile(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  /**
+   * Main Form Submission Handler
+   * 1. Constructs FormData for multipart submission
+   * 2. Attempts to log inquiry via backend API /api/inquiries
+   * 3. Handles success/error states with user-friendly Toast notifications
+   */
   const onSubmit = async (data: ContactFormData) => {
     setStatus("sending");
-    setErrorMessage(null);
     try {
-      // Use FormData so the file attachment is sent as multipart/form-data
       const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("email", data.email);
-      if (data.phone) formData.append("phone", data.phone);
-      if (data.company) formData.append("company", data.company);
-      if (data.projectType) formData.append("projectType", data.projectType);
-      formData.append("message", data.message);
-      if (attachedFile) formData.append("attachment", attachedFile);
+      Object.entries(data).forEach(([key, value]) => {
+        if (value) formData.append(key, value);
+      });
+      if (attachedFile) {
+        formData.append("attachment", attachedFile);
+      }
 
-      // No Content-Type header — browser sets it automatically with the correct boundary
+      // Assuming apiRequest and api.inquiries.create.path are defined elsewhere or mocked for this example
+      // For this example, we'll use the original fetch call structure but with the new state and toast logic
       const res = await fetch("/api/inquiries", {
         method: "POST",
         body: formData,
@@ -125,21 +148,24 @@ export default function Contact() {
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        throw new Error((err as any).message || "Failed to send message");
+        throw new Error((err as any).message || "Failed to send inquiry");
       }
 
       toast({
-        title: "Message Sent Successfully! 🎉",
-        description: "Thank you for reaching out. We'll get back to you shortly.",
-        duration: 6000,
+        title: "Inquiry Sent Successfully!",
+        description: "Thank you for reaching out. Our team will get back to you shortly.",
       });
-      setStatus("idle");
       form.reset();
       setAttachedFile(null);
-    } catch (err: any) {
-      console.error("Contact form error:", err);
-      setErrorMessage(err.message || "Failed to send message. Please try again.");
+      setStatus("idle");
+    } catch (error: any) {
+      console.error("Submission error:", error);
       setStatus("error");
+      toast({
+        variant: "destructive",
+        title: "Error Sending Message",
+        description: error.message || "Something went wrong. Please try again or email us directly.",
+      });
     }
   };
 

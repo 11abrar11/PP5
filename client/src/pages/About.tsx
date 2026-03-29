@@ -1,9 +1,18 @@
+/**
+ * About Page Component
+ * - Presents the agency's history, mission, and philosophy
+ * - Uses Core Values grid and Story sections with animations
+ */
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { motion } from "framer-motion";
 import { Lightbulb, Heart, Star, Zap } from "lucide-react";
 
+/**
+ * Data for Core Values section
+ * Each item includes a Lucide icon, title, and short description.
+ */
 const coreValues = [
   {
     icon: Lightbulb,
@@ -31,15 +40,21 @@ export default function About() {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
+
+      {/* 
+        Standardized Header 
+        - Sets the tone for the entire page
+      */}
       <PageHeader
         title="Designing Experiences. Building Brands. Driving Impact."
         subtitle="PP5 Media Solutions — A multidisciplinary creative and technology agency delivering branding, design, and digital services worldwide."
       />
 
-      {/* ── Intro Section ── */}
+      {/* ── Who We Are (Intro Section) ── */}
       <section className="py-24">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto text-center">
+            {/* Animated small label */}
             <motion.span
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -49,6 +64,8 @@ export default function About() {
             >
               Who We Are
             </motion.span>
+
+            {/* Main agency background text */}
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -58,6 +75,8 @@ export default function About() {
             >
               Founded in 2018, Headquartered in Bangalore
             </motion.h2>
+
+            {/* Narrative paragraphs with staggered fade-ins */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -95,11 +114,12 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── Mission & Vision ── */}
+      {/* ── Mission & Vision (The "Why") ── */}
       <section className="py-24 bg-black text-white">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-            {/* Mission */}
+
+            {/* Our Mission Card */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -107,7 +127,6 @@ export default function About() {
               transition={{ duration: 0.7 }}
               className="relative p-10 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden group"
             >
-              {/* accent bar */}
               <div className="absolute top-0 left-0 w-1 h-full bg-primary rounded-l-2xl" />
               <span className="block text-xs font-semibold tracking-widest text-primary uppercase mb-4">
                 Our Mission
@@ -119,7 +138,7 @@ export default function About() {
               </p>
             </motion.div>
 
-            {/* Vision */}
+            {/* Our Vision Card */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -141,7 +160,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── Core Values ── */}
+      {/* ── Core Values Section ── */}
       <section className="py-24 bg-gray-50">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
@@ -174,6 +193,7 @@ export default function About() {
                 viewport={{ once: true }}
                 className="p-8 bg-white rounded-2xl text-center hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-primary/20 group"
               >
+                {/* Icon wrapper with hover state */}
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">
                   <item.icon size={30} />
                 </div>
@@ -187,10 +207,12 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── Our Story ── */}
+      {/* ── Our Story Section ── */}
       <section className="py-24">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-16 items-center">
+
+            {/* High-quality team imagery placeholder (Unsplash) */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -198,13 +220,20 @@ export default function About() {
               transition={{ duration: 0.7 }}
               className="md:w-1/2"
             >
-              <img
-                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80"
-                alt="PP5 team collaborating"
-                className="rounded-2xl shadow-xl object-cover w-full h-80 md:h-auto"
-              />
+              <div className="relative rounded-2xl overflow-hidden shadow-xl group bg-gray-100">
+                <img
+                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80"
+                  alt="PP5 team collaborating"
+                  loading="lazy"
+                  onLoad={(e) => {
+                    (e.target as HTMLImageElement).classList.remove('opacity-0');
+                  }}
+                  className="rounded-2xl object-cover w-full h-80 md:h-auto hover:grayscale transition-all duration-700 opacity-0"
+                />
+              </div>
             </motion.div>
 
+            {/* Historical narrative */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}

@@ -1,3 +1,8 @@
+/**
+ * Case Study Detail Page
+ * - Dynamic route handling to display specific client projects
+ * - Features a scroll-locked lightbox for work sample viewing
+ */
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
@@ -11,9 +16,17 @@ import { AnimatePresence } from "framer-motion";
 export default function CaseStudyDetail() {
     const params = useParams();
     const slug = params.slug;
+
+    // Find matching case study from the static utilities data
     const study = caseStudies.find(s => s.slug === slug);
+
+    // State to track which image is currently open in the lightbox
     const [selectedImgIdx, setSelectedImgIdx] = useState<number | null>(null);
 
+    /**
+     * Side Effect: Body Scroll Lock
+     * Prevents the page from scrolling when the lightbox is active.
+     */
     useEffect(() => {
         if (selectedImgIdx !== null) {
             document.body.style.overflow = "hidden";
@@ -23,6 +36,7 @@ export default function CaseStudyDetail() {
         return () => { document.body.style.overflow = "auto"; };
     }, [selectedImgIdx]);
 
+    // 404 Fallback if slug is invalid
     if (!study) {
         return (
             <div className="min-h-screen bg-white">
@@ -44,7 +58,7 @@ export default function CaseStudyDetail() {
         <div className="min-h-screen bg-white">
             <Navbar variant="dark-text" />
 
-            {/* Hero */}
+            {/* ── Hero Section (Full-width background image) ── */}
             <section className="relative h-[65vh] min-h-[480px]">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-10" />
                 <img
@@ -76,15 +90,15 @@ export default function CaseStudyDetail() {
                 </div>
             </section>
 
-            {/* Content */}
+            {/* ── Main Layout (Content + Sidebar) ── */}
             <section className="py-20">
                 <div className="container mx-auto px-4 md:px-6">
                     <div className="grid lg:grid-cols-3 gap-16">
 
-                        {/* Left: Main Content */}
+                        {/* Column 1-2: Narrative Content */}
                         <div className="lg:col-span-2 space-y-14">
 
-                            {/* Overview */}
+                            {/* Brief Summary */}
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
@@ -96,7 +110,7 @@ export default function CaseStudyDetail() {
                                 </p>
                             </motion.div>
 
-                            {/* The Ask */}
+                            {/* Section 1: The Challenge (The Ask) */}
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
@@ -112,7 +126,7 @@ export default function CaseStudyDetail() {
                                 </p>
                             </motion.div>
 
-                            {/* Our Solution */}
+                            {/* Section 2: Strategy (Our Solution) */}
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
@@ -142,7 +156,7 @@ export default function CaseStudyDetail() {
                                 </ul>
                             </motion.div>
 
-                            {/* Gallery */}
+                            {/* Section 3: Visual Proof (Gallery) */}
                             {study.gallery && study.gallery.length > 0 && (
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
@@ -154,6 +168,7 @@ export default function CaseStudyDetail() {
                                         <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-bold">3</span>
                                         Work Samples
                                     </h2>
+                                    {/* Masonry-style column grid for samples */}
                                     <div className="columns-1 sm:columns-2 gap-6 [column-fill:_balance]">
                                         {study.gallery.map((img, i) => (
                                             <div key={i} className="break-inside-avoid mb-6">
@@ -170,7 +185,10 @@ export default function CaseStudyDetail() {
                                                             src={img}
                                                             alt={`${study.client} work sample ${i + 1}`}
                                                             loading="lazy"
-                                                            className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110"
+                                                            onLoad={(e) => {
+                                                                (e.target as HTMLImageElement).classList.remove('opacity-0');
+                                                            }}
+                                                            className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110 opacity-0 transition-opacity"
                                                         />
                                                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-500 flex items-center justify-center">
                                                             <motion.div
@@ -190,7 +208,7 @@ export default function CaseStudyDetail() {
                             )}
                         </div>
 
-                        {/* Right: Results Sidebar */}
+                        {/* Column 3: The Results (Sticky Sidebar) */}
                         <div className="lg:col-span-1">
                             <div className="bg-gray-950 text-white p-8 rounded-2xl sticky top-28">
                                 <h3 className="text-lg font-bold font-display mb-6 text-primary uppercase tracking-wider">The Impact</h3>
@@ -203,6 +221,7 @@ export default function CaseStudyDetail() {
                                     ))}
                                 </div>
 
+                                {/* Persistent Call-to-Action */}
                                 <div className="mt-10 pt-8 border-t border-white/10">
                                     <p className="text-gray-400 text-sm mb-4">Ready for similar results?</p>
                                     <Link href="/contact">
@@ -220,7 +239,7 @@ export default function CaseStudyDetail() {
 
             <Footer />
 
-            {/* Lightbox */}
+            {/* ── Visual Asset Lightbox Overlay ── */}
             <AnimatePresence>
                 {selectedImgIdx !== null && (
                     <motion.div
@@ -230,6 +249,7 @@ export default function CaseStudyDetail() {
                         className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md p-4"
                         onClick={() => setSelectedImgIdx(null)}
                     >
+                        {/* Close Trigger */}
                         <button
                             className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all z-[110]"
                             onClick={() => setSelectedImgIdx(null)}
@@ -237,6 +257,7 @@ export default function CaseStudyDetail() {
                             <X size={24} />
                         </button>
 
+                        {/* Navigation controls (Next/Prev) */}
                         {selectedImgIdx > 0 && (
                             <button
                                 className="absolute left-6 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all z-[110]"
@@ -255,6 +276,7 @@ export default function CaseStudyDetail() {
                             </button>
                         )}
 
+                        {/* Lightbox High-res Image and Metadata */}
                         <motion.div
                             key={selectedImgIdx}
                             initial={{ scale: 0.9, opacity: 0 }}

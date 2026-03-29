@@ -1,11 +1,22 @@
+/**
+ * Email Utility Module
+ * - Handles SMTP configuration and email sending
+ * - Includes templates for lead inquiry notifications
+ */
 import nodemailer from "nodemailer";
 
+/**
+ * Interface for email attachments (e.g., project briefs)
+ */
 export interface Attachment {
     filename: string;
     content: Buffer;
     contentType: string;
 }
 
+/**
+ * Interface for the sendEmail function parameters
+ */
 export interface SendEmailOptions {
     from: string;
     to: string;
@@ -18,13 +29,13 @@ export interface SendEmailOptions {
 
 /**
  * Sends an email using the SMTP credentials configured in .env
- * Compatible with any SMTP provider (cPanel, Zoho, Outlook, etc.)
+ * Includes specific fixes for cloud hosting (Render) and Gmail.
  */
 export async function sendEmail(options: SendEmailOptions): Promise<void> {
     const host = process.env.SMTP_HOST;
     const port = parseInt(process.env.SMTP_PORT || "465", 10);
-    // Automatically determine 'secure' based on port if not explicitly set
-    // Port 465 is usually SSL (secure: true), Port 587 is STARTTLS (secure: false)
+
+    // Determine 'secure' flag (SSL/TLS) automatically based on the port
     const secure = process.env.SMTP_SECURE
         ? process.env.SMTP_SECURE !== "false"
         : port === 465;
@@ -32,6 +43,7 @@ export async function sendEmail(options: SendEmailOptions): Promise<void> {
     const user = process.env.SMTP_USER;
     const pass = process.env.SMTP_PASS;
 
+    // Validate that all required email settings are present
     if (!host || !user || !pass) {
         const missing = [
             !host && "SMTP_HOST",
@@ -45,33 +57,45 @@ export async function sendEmail(options: SendEmailOptions): Promise<void> {
         );
     }
 
+    /**
+     * Transporter Options Configuration
+     * Optimized for high reliability and cloud environment compatibility.
+     */
     const transporterOptions: any = {
         host,
         port,
         secure,
         requireTLS: port === 587,
         auth: { user, pass },
+        // Extended timeouts to handle slow cloud network connections
         connectionTimeout: 20000,
         greetingTimeout: 20000,
         socketTimeout: 30000,
-        family: 4, // Force IPv4 to avoid ENETUNREACH on IPv6
+        // Force IPv4 to bypass ENETUNREACH errors sometimes seen on Render's IPv6 network
+        family: 4,
         tls: {
+            // Allow self-signed certificates for broader compatibility
             rejectUnauthorized: false,
         },
     };
 
-    // Use built-in 'gmail' service if host is Gmail
-    // This is often more reliable on cloud providers
+    /**
+     * Gmail Special Handling
+     * If the host is Gmail, use the specialized 'gmail' service mode in Nodemailer.
+     * This bypasses many common firewall/port issues on services like Render.
+     */
     if (host.includes("gmail.com")) {
         delete transporterOptions.host;
         delete transporterOptions.port;
         delete transporterOptions.secure;
-        delete transporterOptions.requireTLS; // Not needed for service
+        delete transporterOptions.requireTLS;
         transporterOptions.service = "gmail";
     }
 
+    // Create the Nodemailer transporter instance
     const transporter = nodemailer.createTransport(transporterOptions);
 
+    // Send the actual email message
     await transporter.sendMail({
         from: options.from,
         to: options.to,
@@ -86,11 +110,19 @@ export async function sendEmail(options: SendEmailOptions): Promise<void> {
         })),
     });
 
-    console.log(`✅ Email sent → ${options.to} | Subject: ${options.subject}`);
+    log(`✅ Email sent → ${options.to} | Subject: ${options.subject}`);
+}
+
+// Internal logging helper (duplicated from index.ts for standalone utility use)
+function log(msg: string) {
+    const time = new Date().toLocaleTimeString();
+    console.log(`${time} [email] ${msg}`);
 }
 
 /**
- * Builds the HTML body for a contact form inquiry email
+ * HTML Template Builder
+ * Generates a clean, branded HTML email and a plain-text fallback for contact inquiries.
+ * @param fields The data submitted via the contact form
  */
 export function buildInquiryEmail(fields: {
     name: string;
@@ -102,6 +134,7 @@ export function buildInquiryEmail(fields: {
     hasAttachment: boolean;
     attachmentName?: string;
 }): { html: string; text: string } {
+    // Construct rows for the data table in the email
     const rows = [
         { label: "Name", value: fields.name },
         { label: "Email", value: `<a href="mailto:${fields.email}" style="color:#16a34a;">${fields.email}</a>` },
@@ -113,6 +146,7 @@ export function buildInquiryEmail(fields: {
             : []),
     ];
 
+    // Generate table rows HTML
     const tableRows = rows
         .map(
             (r, i) => `
@@ -123,9 +157,10 @@ export function buildInquiryEmail(fields: {
         )
         .join("");
 
+    // Full branded HTML template
     const html = `
 <div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
-  <!-- Header -->
+  <!-- Header Banner -->
   <div style="background:#000000;padding:24px 28px;display:flex;align-items:center;gap:12px;">
     <div style="width:4px;height:40px;background:#16a34a;border-radius:2px;"></div>
     <div>
@@ -134,23 +169,24 @@ export function buildInquiryEmail(fields: {
     </div>
   </div>
 
-  <!-- Details Table -->
+  <!-- Detailed Lead Information -->
   <table style="width:100%;border-collapse:collapse;">
     ${tableRows}
   </table>
 
-  <!-- Message -->
+  <!-- User Message Section -->
   <div style="padding:20px 28px;">
     <p style="font-size:13px;font-weight:bold;color:#6b7280;margin:0 0 10px;text-transform:uppercase;letter-spacing:.5px;">Message</p>
     <div style="background:#f9fafb;border-left:4px solid #16a34a;border-radius:8px;padding:16px;font-size:14px;line-height:1.7;color:#1f2937;white-space:pre-wrap;">${fields.message}</div>
   </div>
 
-  <!-- Footer -->
+  <!-- Branded Footer -->
   <div style="background:#f3f4f6;padding:14px 28px;border-top:1px solid #e5e7eb;">
     <p style="color:#9ca3af;font-size:11px;margin:0;">Reply directly to this email to respond to <strong>${fields.name}</strong> at <strong>${fields.email}</strong>.</p>
   </div>
 </div>`;
 
+    // Plain-text alternative (for accessibility and old email clients)
     const text = [
         `New Inquiry — PP5 Media Solutions`,
         `─────────────────────────────────`,

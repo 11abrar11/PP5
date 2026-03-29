@@ -10,10 +10,16 @@ export function PageHeader({ title, subtitle, bgImage }: PageHeaderProps) {
   return (
     <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden bg-black">
       {/* Abstract Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-black z-10" />
-      <div 
-        className="absolute inset-0 opacity-40 bg-cover bg-center"
-        style={{ backgroundImage: bgImage ? `url(${bgImage})` : 'url(https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80)' }}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black z-10" />
+      <img
+        src={bgImage || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80'}
+        alt=""
+        loading="eager"
+        className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000"
+        onLoad={(e) => {
+          (e.target as HTMLImageElement).classList.remove('opacity-0');
+          (e.target as HTMLImageElement).classList.add('opacity-40');
+        }}
       />
       
       <div className="container relative z-20 mx-auto px-4 text-center">

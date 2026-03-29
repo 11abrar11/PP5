@@ -7,6 +7,10 @@ import type { PortfolioItem } from "@/utils/portfolio";
 import { Play, X, ZoomIn, ChevronLeft, ChevronRight, FileText, ExternalLink } from "lucide-react";
 
 // ─── Filter categories ────────────────────────────────────────────────────────
+/**
+ * Available filter categories for the portfolio items.
+ * 'value' must match the 'category' property in portfolioItems data.
+ */
 const FILTERS = [
   { label: "All Work", value: "all" },
   { label: "Social & GIFs", value: "social" },
@@ -18,7 +22,11 @@ const FILTERS = [
   { label: "Magazine", value: "magazine" },
 ];
 
-// ─── Masonry grid using CSS columns ──────────────────────────────────────────
+/**
+ * Masonry Grid Component
+ * Uses CSS columns to create a responsive masonry-style layout.
+ * Items flow vertically within columns to account for varying aspect ratios.
+ */
 function MasonryGrid({ items, onOpen }: { items: PortfolioItem[]; onOpen: (i: PortfolioItem) => void }) {
   return (
     <div
@@ -32,7 +40,10 @@ function MasonryGrid({ items, onOpen }: { items: PortfolioItem[]; onOpen: (i: Po
   );
 }
 
-// ─── Individual card ──────────────────────────────────────────────────────────
+/**
+ * Individual Portfolio Card
+ * Handles hover states, media rendering (Image/Video/PDF teaser), and click-to-open logic.
+ */
 function PortfolioCard({ item, index, onOpen }: { item: PortfolioItem; index: number; onOpen: (i: PortfolioItem) => void }) {
   const [hovered, setHovered] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -50,53 +61,64 @@ function PortfolioCard({ item, index, onOpen }: { item: PortfolioItem; index: nu
       onClick={() => onOpen(item)}
     >
       <div className="rounded-2xl overflow-hidden relative bg-gray-950 shadow-md hover:shadow-2xl transition-shadow duration-300">
-        {/* Media */}
-        {item.pdf ? (
-          // ── PDF card — styled document tile ──────────────────────────────
-          <div
-            className={`w-full flex flex-col items-center justify-center gap-4 px-6 py-10 bg-gradient-to-br from-gray-900 to-gray-800 transition-transform duration-500 ${hovered ? 'scale-105' : 'scale-100'}`}
-            style={{ minHeight: 220 }}
-          >
-            <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center">
-              <FileText className="w-8 h-8 text-primary" />
+        {/* Media Rendering Logic */}
+        <div className="relative overflow-hidden bg-gray-900 group-hover:bg-gray-800 transition-colors duration-500">
+          {item.pdf ? (
+            // ── PDF card — styled document tile with icon ──────────────────────────────
+            <div
+              className={`w-full flex flex-col items-center justify-center gap-4 px-6 py-10 bg-gradient-to-br from-gray-900 to-gray-800 transition-transform duration-500 ${hovered ? 'scale-105' : 'scale-100'}`}
+              style={{ minHeight: 220 }}
+            >
+              <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center">
+                <FileText className="w-8 h-8 text-primary" />
+              </div>
+              <div className="text-center">
+                {item.client && <p className="text-primary text-xs font-semibold uppercase tracking-widest mb-1">{item.client}</p>}
+                <p className="text-white font-bold text-sm leading-snug">{item.title}</p>
+              </div>
+              <span className="text-[10px] uppercase tracking-widest text-white/30 border border-white/10 rounded-full px-3 py-1">PDF Document</span>
             </div>
-            <div className="text-center">
-              {item.client && <p className="text-primary text-xs font-semibold uppercase tracking-widest mb-1">{item.client}</p>}
-              <p className="text-white font-bold text-sm leading-snug">{item.title}</p>
+          ) : item.video ? (
+            <div className="relative aspect-video sm:aspect-auto">
+              <video
+                src={item.image}
+                muted
+                loop
+                playsInline
+                className={`w-full h-auto object-cover transition-transform duration-500 ${hovered ? "scale-105" : "scale-100"}`}
+                ref={(el) => {
+                  if (el) hovered ? el.play().catch(() => { }) : el.pause();
+                }}
+              />
+              {/* Play badge always visible on video */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <motion.div
+                  animate={{ scale: hovered ? 1.15 : 1, opacity: hovered ? 1 : 0.85 }}
+                  transition={{ duration: 0.2 }}
+                  className="w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-2xl"
+                >
+                  <Play className="w-6 h-6 text-white ml-0.5" fill="white" />
+                </motion.div>
+              </div>
             </div>
-            <span className="text-[10px] uppercase tracking-widest text-white/30 border border-white/10 rounded-full px-3 py-1">PDF Document</span>
-          </div>
-        ) : item.video ? (
-          <div className="relative">
-            <video
-              src={item.image}
-              muted
-              loop
-              playsInline
-              className={`w-full h-auto object-cover transition-transform duration-500 ${hovered ? "scale-105" : "scale-100"}`}
-              ref={(el) => {
-                if (el) hovered ? el.play().catch(() => { }) : el.pause();
-              }}
-            />
-            {/* Play badge always visible on video */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <motion.div
-                animate={{ scale: hovered ? 1.15 : 1, opacity: hovered ? 1 : 0.85 }}
-                transition={{ duration: 0.2 }}
-                className="w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-2xl"
-              >
-                <Play className="w-6 h-6 text-white ml-0.5" fill="white" />
-              </motion.div>
+          ) : (
+            <div className="relative">
+              <img
+                src={item.thumbnail}
+                alt={item.title}
+                loading="lazy"
+                onLoad={(e) => {
+                  (e.target as HTMLImageElement).classList.add('opacity-100');
+                }}
+                className={`w-full h-auto object-cover opacity-0 transition-opacity duration-700 transition-transform duration-500 ${hovered ? "scale-105" : "scale-100"}`}
+              />
+              {/* Fallback pattern background while loading */}
+              <div className="absolute inset-0 -z-10 bg-gray-900 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
+              </div>
             </div>
-          </div>
-        ) : (
-          <img
-            src={item.thumbnail}
-            alt={item.title}
-            loading="lazy"
-            className={`w-full h-auto object-cover transition-transform duration-500 ${hovered ? "scale-105" : "scale-100"}`}
-          />
-        )}
+          )}
+        </div>
 
         {/* Hover overlay */}
         <motion.div
@@ -141,7 +163,10 @@ function PortfolioCard({ item, index, onOpen }: { item: PortfolioItem; index: nu
   );
 }
 
-// ─── Lightbox ─────────────────────────────────────────────────────────────────
+/**
+ * Fullscreen Lightbox Component
+ * Displays high-res media (Image/Video/PDF) with navigation and escape-to-close features.
+ */
 function Lightbox({ item, items, onClose, onNav }: {
   item: PortfolioItem;
   items: PortfolioItem[];
@@ -272,7 +297,10 @@ function Lightbox({ item, items, onClose, onNav }: {
   );
 }
 
-// ─── Hero parallax strip ──────────────────────────────────────────────────────
+/**
+ * Hero Parallax Strip
+ * A visual decorative header that reacts to page scrolling.
+ */
 function HeroStrip() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
@@ -322,7 +350,10 @@ function HeroStrip() {
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+/**
+ * Main Portfolio Page
+ * Orchestrates filtering, grid rendering, and lightbox state.
+ */
 export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [lightboxItem, setLightboxItem] = useState<PortfolioItem | null>(null);

@@ -1,3 +1,9 @@
+/**
+ * API Routes Module
+ * - Registers all backend endpoints (Services, Case Studies, Inquiries)
+ * - Handles file uploads via Multer
+ * - Integrates with Email and Database storage
+ */
 import type { Express } from "express";
 import type { Server } from "http";
 import { storage } from "./storage";
@@ -6,13 +12,19 @@ import { z } from "zod";
 import { sendEmail, buildInquiryEmail } from "./email";
 import multer from "multer";
 
-// ─── Multer: in-memory storage (no disk writes) ───────────────────────────────
+/**
+ * Configure Multer for File Uploads
+ * Files are kept in memory (RAM) and limited to 10MB to avoid server overload.
+ */
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB max
 });
 
-// ─── Validation schema for contact form (all fields come as strings from FormData) ──
+/**
+ * Validation Schema for Contact Form
+ * Note: Multer parses FormData into strings, so we validate strings here.
+ */
 const inquiryFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
@@ -22,12 +34,18 @@ const inquiryFormSchema = z.object({
   message: z.string().min(10, "Message must be at least 10 characters"),
 });
 
+/**
+ * Main Route Registration Function
+ */
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
 
-  // ── Seed initial data ───────────────────────────────────────────────────────
+  /**
+   * 1. Data Seeding
+   * Ensures the database has initial services and case studies on startup.
+   */
   try {
     await storage.seedInitialData();
   } catch (error: any) {
@@ -38,7 +56,10 @@ export async function registerRoutes(
     }
   }
 
-  // ── GET /api/services ──────────────────────────────────────────────────────
+  /**
+   * 2. GET API: Services List
+   * Fetches the dynamic list of service cards for the Services page.
+   */
   app.get(api.services.list.path, async (req, res) => {
     try {
       const services = await storage.getServices();
@@ -51,7 +72,10 @@ export async function registerRoutes(
     }
   });
 
-  // ── GET /api/case-studies ──────────────────────────────────────────────────
+  /**
+   * 3. GET API: Case Studies List
+   * Fetches the portfolio items for the Gallery page.
+   */
   app.get(api.caseStudies.list.path, async (req, res) => {
     try {
       const studies = await storage.getCaseStudies();
@@ -64,13 +88,17 @@ export async function registerRoutes(
     }
   });
 
-  // ── POST /api/inquiries  (multipart/form-data with optional file) ──────────
+  /**
+   * 4. POST API: Contact Inquiry
+   * Handles multi-part form submissions (text + optional file attachment).
+   * Actions: Validates -> Saves to DB -> Sends Email Notification.
+   */
   app.post(
     api.inquiries.create.path,
     upload.single("attachment"), // parses the file field named "attachment"
     async (req, res) => {
       try {
-        // 1. Validate form fields
+        // A. Validate the submitted text fields
         const parsed = inquiryFormSchema.safeParse(req.body);
         if (!parsed.success) {
           return res.status(400).json({
@@ -80,13 +108,14 @@ export async function registerRoutes(
         }
 
         const { name, email, phone, company, projectType, message } = parsed.data;
-        const file = req.file; // multer-provided file (Buffer in memory)
+        const file = req.file; // The uploaded file (if any) provided by Multer
 
-        // 2. Build subject & enriched message for DB storage
+        // B. Prepare the inquiry details for storage & email
         const subject = projectType
           ? `[${projectType}] Inquiry from ${name}`
           : `Inquiry from ${name}`;
 
+        // Create a consolidated message string for the database log
         const dbMessage = [
           message,
           phone ? `Phone: ${phone}` : null,
@@ -97,14 +126,15 @@ export async function registerRoutes(
           .filter(Boolean)
           .join("\n");
 
-        // 3. Save to DB (best-effort — doesn't fail the response if DB is down)
+        // C. Storage Log (Save record of the lead)
         try {
           await storage.createInquiry({ name, email, subject, message: dbMessage });
         } catch (dbErr: any) {
           console.warn("⚠️  Could not save inquiry to DB:", dbErr.message);
         }
 
-        // 4. Build email content
+        // D. Email Notification
+        // Generate the styled HTML and Text content
         const { html, text } = buildInquiryEmail({
           name,
           email,
@@ -116,10 +146,11 @@ export async function registerRoutes(
           attachmentName: file?.originalname,
         });
 
+        // Determine the professional 'from' address
         const senderAddress =
           process.env.SMTP_FROM || process.env.SMTP_USER || "noreply@pp5mediasolutions.com";
 
-        // 5. Send email (with attachment if provided)
+        // Dispatch the email
         await sendEmail({
           from: `"PP5 Media Solutions" <${senderAddress}>`,
           to: "support@pp5mediasolutions.com",
@@ -140,6 +171,7 @@ export async function registerRoutes(
 
         return res.status(201).json({ success: true, message: "Inquiry received and email sent." });
       } catch (err: any) {
+        // Centralized error logging for the contact form
         console.error("❌ Contact form error detailed:", {
           message: err.message,
           stack: err.stack,
