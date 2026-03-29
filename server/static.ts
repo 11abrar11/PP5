@@ -30,7 +30,7 @@ export function serveStatic(app: Express) {
    * Since this is a React/Wouter application, all client-side routes (like /services or /contact)
    * must return the 'index.html' file so the browser-side router can take over.
    */
-  app.use(":path*", (_req, res) => {
+  app.use((_req, res) => {
     res.sendFile(path.resolve(distPath, "index.html"));
   });
 }
