@@ -7,18 +7,23 @@ const __dirname = dirname(__filename);
 
 /**
  * dev.js Shim
- * This file allows running 'node dev' to start the development server,
- * which is helpful if your environment's "Run" button is hardcoded to that command.
+ * This file allows running 'node dev' to start the server.
+ * - In development (default): Starts via 'tsx' for hot-reloading.
+ * - In production: Starts the pre-built 'dist/index.cjs' bundle.
  */
-console.log('Starting development server via dev.js shim...');
+const isProduction = process.env.NODE_ENV === 'production';
+const command = isProduction ? 'node' : 'npx';
+const args = isProduction ? ['dist/index.cjs'] : ['tsx', 'server/index.ts'];
 
-const child = spawn('npx', ['tsx', 'server/index.ts'], {
+console.log(`Starting ${isProduction ? 'production' : 'development'} server via dev.js shim...`);
+
+const child = spawn(command, args, {
   cwd: __dirname,
   stdio: 'inherit',
   shell: true,
   env: { 
     ...process.env, 
-    NODE_ENV: 'development' 
+    NODE_ENV: isProduction ? 'production' : 'development' 
   }
 });
 

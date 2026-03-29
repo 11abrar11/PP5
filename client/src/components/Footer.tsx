@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Facebook, Twitter, Instagram, Linkedin, MapPin, Mail, Phone } from "lucide-react";
+import { MapPin, Mail, Phone } from "lucide-react";
 import logoFull from "@assets/logo-full.png";
 
 export function Footer() {
