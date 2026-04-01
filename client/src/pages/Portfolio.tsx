@@ -107,10 +107,7 @@ function PortfolioCard({ item, index, onOpen }: { item: PortfolioItem; index: nu
                 src={item.thumbnail}
                 alt={item.title}
                 loading="lazy"
-                onLoad={(e) => {
-                  (e.target as HTMLImageElement).classList.add('opacity-100');
-                }}
-                className={`w-full h-auto object-cover opacity-0 transition-opacity duration-700 transition-transform duration-500 ${hovered ? "scale-105" : "scale-100"}`}
+                className={`w-full h-auto object-cover transition-transform duration-500 ${hovered ? "scale-105" : "scale-100"}`}
               />
               {/* Fallback pattern background while loading */}
               <div className="absolute inset-0 -z-10 bg-gray-900 flex items-center justify-center">

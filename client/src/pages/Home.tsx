@@ -37,7 +37,7 @@ export default function Home() {
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-60 md:w-1/2 md:right-0 md:opacity-70 transition-opacity duration-1000"
+          className="absolute inset-y-0 right-0 w-full md:w-1/2 object-cover opacity-60 md:opacity-100 transition-opacity duration-1000 z-0"
           style={{ objectPosition: 'center' }}
         />
 
@@ -47,8 +47,8 @@ export default function Home() {
           - Desktop: Creates a seamless transition from the solid black text area 
           - to the transparent video area on the right.
         */}
-        <div className="absolute inset-0 bg-black/40 md:bg-transparent z-0" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/80 to-black md:bg-gradient-to-r md:from-black md:via-black/70 md:to-transparent z-[1]" />
+        <div className="absolute inset-0 bg-black/50 md:bg-transparent z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black md:bg-gradient-to-r md:from-black md:via-black md:to-transparent z-[2]" />
 
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="max-w-4xl">
