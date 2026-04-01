@@ -184,7 +184,7 @@ export default function Contact() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             transition={{ duration: 0.6 }}
             className="text-lg md:text-xl text-gray-600 leading-relaxed"
           >
@@ -205,7 +205,7 @@ export default function Contact() {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.6 }}
               className="lg:w-1/3 space-y-8"
             >
@@ -228,7 +228,7 @@ export default function Contact() {
                     key={i}
                     initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false }}
                     transition={{ delay: i * 0.1 }}
                     className="flex items-start gap-4 p-5 rounded-2xl border border-gray-100 bg-gray-50 hover:border-primary/20 hover:bg-white hover:shadow-md transition-all duration-300"
                   >
@@ -261,7 +261,7 @@ export default function Contact() {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.6, delay: 0.1 }}
               className="lg:w-2/3 bg-gray-50 border border-gray-100 p-8 md:p-12 rounded-3xl shadow-sm"
             >

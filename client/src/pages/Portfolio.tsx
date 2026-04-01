@@ -53,7 +53,7 @@ function PortfolioCard({ item, index, onOpen }: { item: PortfolioItem; index: nu
       ref={ref}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
+      viewport={{ once: false, margin: "-60px" }}
       transition={{ duration: 0.5, delay: (index % 4) * 0.07, ease: "easeOut" }}
       className="break-inside-avoid mb-4 relative group cursor-pointer"
       onMouseEnter={() => setHovered(true)}

@@ -381,7 +381,7 @@ export default function Services() {
             <motion.span
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               className="inline-block text-sm font-semibold tracking-widest text-primary uppercase mb-3"
             >
               What We Offer
@@ -389,7 +389,7 @@ export default function Services() {
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ delay: 0.1 }}
               className="text-3xl md:text-4xl font-display font-bold text-gray-900"
             >
