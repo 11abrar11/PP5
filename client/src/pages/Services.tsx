@@ -17,6 +17,7 @@ import {
   ChevronRight,
   ArrowRight,
 } from "lucide-react";
+import { useDeviceFeatures } from "@/hooks/useDeviceFeatures";
 
 /**
  * Static Rich Content Data
@@ -312,25 +313,29 @@ function ServiceTile({
   index: number;
   onClick: () => void;
 }) {
+  const { isMobile, prefersReducedMotion } = useDeviceFeatures();
   const Icon = service.icon;
+  const tiltDisabled = isMobile || prefersReducedMotion;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
-      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
+      viewport={{ once: false, margin: "-50px" }}
       className="h-full"
     >
       <Tilt
-        perspective={1000}
-        glareEnable={true}
-        glareMaxOpacity={0.15}
-        scale={1.02}
+        tiltMaxAngleX={tiltDisabled ? 0 : 10}
+        tiltMaxAngleY={tiltDisabled ? 0 : 10}
+        glareEnable={!tiltDisabled}
+        glareMaxOpacity={0.1}
+        scale={tiltDisabled ? 1 : 1.02}
         className="h-full"
       >
         <button
           onClick={onClick}
-          className="group relative p-8 rounded-2xl bg-white border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10 overflow-hidden text-left w-full h-full"
+          className="group relative p-8 rounded-2xl bg-white border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 overflow-hidden text-left w-full h-full"
         >
           {/* Subtle background decoration */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -mr-8 -mt-8 transition-all group-hover:bg-primary/10 group-hover:scale-110" />
@@ -381,7 +386,7 @@ export default function Services() {
             <motion.span
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: false, margin: "-50px" }}
               className="inline-block text-sm font-semibold tracking-widest text-primary uppercase mb-3"
             >
               What We Offer
@@ -389,7 +394,7 @@ export default function Services() {
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: false, margin: "-50px" }}
               transition={{ delay: 0.1 }}
               className="text-3xl md:text-4xl font-display font-bold text-gray-900"
             >
@@ -417,7 +422,7 @@ export default function Services() {
           <motion.span
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, margin: "-100px" }}
             className="inline-block text-sm font-semibold tracking-widest text-primary uppercase mb-4"
           >
             Let's Collaborate
@@ -425,7 +430,7 @@ export default function Services() {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, margin: "-100px" }}
             transition={{ delay: 0.1 }}
             className="text-3xl md:text-5xl font-display font-bold text-white mb-6 leading-tight"
           >
@@ -436,7 +441,7 @@ export default function Services() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, margin: "-100px" }}
             transition={{ delay: 0.2 }}
             className="text-gray-400 text-lg mb-10 max-w-xl mx-auto"
           >
@@ -446,7 +451,7 @@ export default function Services() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, margin: "-100px" }}
             transition={{ delay: 0.3 }}
           >
             <Link href="/contact">

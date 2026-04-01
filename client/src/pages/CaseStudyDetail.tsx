@@ -102,7 +102,7 @@ export default function CaseStudyDetail() {
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
+                                viewport={{ once: false, margin: "-50px" }}
                                 transition={{ duration: 0.5 }}
                             >
                                 <p className="text-xl text-gray-600 leading-relaxed border-l-4 border-primary pl-6 italic">
@@ -114,7 +114,7 @@ export default function CaseStudyDetail() {
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
+                                viewport={{ once: false, margin: "-50px" }}
                                 transition={{ duration: 0.5 }}
                             >
                                 <h2 className="text-2xl font-bold font-display mb-4 flex items-center gap-3">
@@ -130,7 +130,7 @@ export default function CaseStudyDetail() {
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
+                                viewport={{ once: false, margin: "-50px" }}
                                 transition={{ duration: 0.5 }}
                             >
                                 <h2 className="text-2xl font-bold font-display mb-4 flex items-center gap-3">
@@ -161,7 +161,7 @@ export default function CaseStudyDetail() {
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: false }}
+                                    viewport={{ once: false, margin: "-50px" }}
                                     transition={{ duration: 0.5 }}
                                 >
                                     <h2 className="text-2xl font-bold font-display mb-6 flex items-center gap-3">
@@ -175,7 +175,7 @@ export default function CaseStudyDetail() {
                                                 <motion.div
                                                     initial={{ opacity: 0, y: 20 }}
                                                     whileInView={{ opacity: 1, y: 0 }}
-                                                    viewport={{ once: false }}
+                                                    viewport={{ once: false, margin: "-50px" }}
                                                     transition={{ delay: i * 0.1 }}
                                                     className="group relative cursor-pointer"
                                                     onClick={() => setSelectedImgIdx(i)}

@@ -57,6 +57,7 @@ export default function Home() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
+              viewport={{ once: false, margin: "-50px" }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-primary text-sm font-semibold mb-6 border border-white/5 backdrop-blur-sm"
             >
               <Zap size={16} /> Digital Excellence Redefined
@@ -64,10 +65,11 @@ export default function Home() {
 
             {/* Main Headline with Typewriter effect */}
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className="text-5xl md:text-7xl font-bold font-display text-white leading-tight mb-8"
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: false, margin: "-50px" }}
+              className="text-5xl md:text-8xl font-black font-display text-white mb-6 leading-[0.9] tracking-tighter"
             >
               We Craft Digital <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-green-400">
@@ -151,7 +153,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: false }}
+                viewport={{ once: false, margin: "-50px" }}
                 className="group relative bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-100"
               >
                 {/* Project Image backdrop */}
@@ -205,7 +207,7 @@ export default function Home() {
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false }}
+                viewport={{ once: false, margin: "-100px" }}
               >
                 <h2 className="text-sm font-bold tracking-widest text-primary uppercase mb-3">Why Choose Us</h2>
                 <h3 className="text-4xl md:text-5xl font-bold font-display mb-8">

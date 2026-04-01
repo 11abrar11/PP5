@@ -58,7 +58,7 @@ export default function About() {
             <motion.span
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false, margin: "-50px" }}
               transition={{ duration: 0.5 }}
               className="inline-block text-sm font-semibold tracking-widest text-primary uppercase mb-4"
             >
@@ -69,7 +69,7 @@ export default function About() {
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false, margin: "-50px" }}
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-8 leading-tight"
             >
@@ -80,7 +80,7 @@ export default function About() {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false, margin: "-50px" }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-xl text-gray-600 leading-relaxed mb-6"
             >
@@ -91,7 +91,7 @@ export default function About() {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false, margin: "-50px" }}
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-lg text-gray-600 leading-relaxed mb-6"
             >
@@ -102,7 +102,7 @@ export default function About() {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false, margin: "-50px" }}
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-lg text-gray-600 leading-relaxed"
             >
@@ -123,7 +123,7 @@ export default function About() {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false, margin: "-50px" }}
               transition={{ duration: 0.7 }}
               className="relative p-10 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden group"
             >
@@ -142,7 +142,7 @@ export default function About() {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: false, margin: "-50px" }}
               transition={{ duration: 0.7, delay: 0.1 }}
               className="relative p-10 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden group"
             >
@@ -167,7 +167,7 @@ export default function About() {
             <motion.span
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: false, margin: "-50px" }}
               className="inline-block text-sm font-semibold tracking-widest text-primary uppercase mb-3"
             >
               What Drives Us
@@ -175,7 +175,7 @@ export default function About() {
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: false, margin: "-50px" }}
               transition={{ delay: 0.1 }}
               className="text-3xl md:text-4xl font-display font-bold text-gray-900"
             >
@@ -190,7 +190,7 @@ export default function About() {
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                viewport={{ once: false }}
+                viewport={{ once: false, margin: "-50px" }}
                 className="p-8 bg-white rounded-2xl text-center hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-primary/20 group"
               >
                 {/* Icon wrapper with hover state */}
@@ -216,7 +216,7 @@ export default function About() {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: false, margin: "-50px" }}
               transition={{ duration: 0.7 }}
               className="md:w-1/2"
             >
@@ -237,7 +237,7 @@ export default function About() {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: false, margin: "-50px" }}
               transition={{ duration: 0.7, delay: 0.1 }}
               className="md:w-1/2 space-y-6"
             >

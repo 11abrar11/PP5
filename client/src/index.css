@@ -77,9 +77,13 @@
   * {
     @apply border-border;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/30 selection:text-primary;
     font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
   }
   
   h1, h2, h3, h4, h5, h6 {
