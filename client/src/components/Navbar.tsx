@@ -2,8 +2,8 @@ import { Link, useLocation } from "wouter";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import logoFull from "@assets/logo-full.png";
-import logoIcon from "@assets/logo-icon.png";
+import logoFull from "@assets/logo-full.svg";
+import logoIcon from "@assets/logo-main.svg";
 
 
 const links = [
@@ -17,9 +17,10 @@ const links = [
 
 interface NavbarProps {
   variant?: "default" | "dark-text";
+  stickyVariant?: "light" | "dark";
 }
 
-export function Navbar({ variant = "default" }: NavbarProps) {
+export function Navbar({ variant = "default", stickyVariant = "light" }: NavbarProps) {
 
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -36,7 +37,9 @@ export function Navbar({ variant = "default" }: NavbarProps) {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-        ? "bg-white/95 backdrop-blur-md border-b border-gray-100 py-3 shadow-sm"
+        ? (stickyVariant === "dark" 
+            ? "bg-black/95 backdrop-blur-md border-b border-white/10 py-3 shadow-lg" 
+            : "bg-white/95 backdrop-blur-md border-b border-gray-100 py-3 shadow-sm")
         : (variant === "dark-text" ? "bg-black/95 py-6" : "bg-transparent py-6")
         }`}
 
@@ -45,7 +48,7 @@ export function Navbar({ variant = "default" }: NavbarProps) {
         <Link href="/">
           <div className="cursor-pointer flex items-center gap-3">
             <img
-              src={scrolled ? logoIcon : logoFull}
+              src={(scrolled && stickyVariant !== "dark") ? logoIcon : logoFull}
               alt="PP5 Logo"
               className={`transition-all duration-300 ${scrolled ? "h-8" : "h-12"}`}
             />
@@ -58,7 +61,7 @@ export function Navbar({ variant = "default" }: NavbarProps) {
             <Link key={link.href} href={link.href}>
               <span className={`cursor-pointer text-sm font-medium transition-colors hover:text-primary ${location === link.href
                 ? "text-primary"
-                : (scrolled ? "text-black/80" : "text-white/80")
+                : (scrolled && stickyVariant !== "dark" ? "text-black/80" : "text-white/80")
                 }`}>
                 {link.label}
               </span>
@@ -73,7 +76,7 @@ export function Navbar({ variant = "default" }: NavbarProps) {
 
         {/* Mobile Toggle */}
         <button
-          className={`md:hidden p-2 ${scrolled ? "text-black" : "text-white"}`}
+          className={`md:hidden p-2 ${scrolled && stickyVariant !== "dark" ? "text-black" : "text-white"}`}
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X /> : <Menu />}

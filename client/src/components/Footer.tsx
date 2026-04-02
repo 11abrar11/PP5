@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { MapPin, Mail, Phone } from "lucide-react";
-import logoFull from "@assets/logo-full.png";
+import logoFull from "@assets/logo-white.svg";
 
 export function Footer() {
   return (
@@ -10,10 +10,10 @@ export function Footer() {
 
           {/* Brand */}
           <div className="lg:col-span-2 space-y-6">
-            <img src={logoFull} alt="PP5 Logo" className="h-12 brightness-0 invert" />
             <p className="text-gray-400 leading-relaxed">
               At the intersection of design, technology, and strategy, we craft digital experiences that drive growth.
             </p>
+            <img src={logoFull} alt="PP5 Logo" className="h-12" />
           </div>
 
           {/* Quick Links */}
@@ -71,12 +71,8 @@ export function Footer() {
 
         </div>
 
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-center items-center gap-4 text-sm text-gray-500 text-center">
           <p>© {new Date().getFullYear()} PP5 Agency. All rights reserved.</p>
-          <div className="flex gap-8">
-            <a href="#" className="hover:text-white">Privacy Policy</a>
-            <a href="#" className="hover:text-white">Terms of Service</a>
-          </div>
         </div>
       </div>
     </footer>
