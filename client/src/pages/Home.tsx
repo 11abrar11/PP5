@@ -20,11 +20,26 @@ export default function Home() {
 
   // Robust Autoplay for Mobile Browsers
   useEffect(() => {
-    if (videoRef.current) {
-      // Explicitly call play to ensure it starts on mobile
-      videoRef.current.play().catch(error => {
-        console.warn("Hero video autoplay failed:", error);
-      });
+    const video = videoRef.current;
+    if (video) {
+      // Force muted property and check for playsinline
+      video.muted = true;
+      video.setAttribute('muted', '');
+      video.setAttribute('webkit-playsinline', 'true');
+      video.setAttribute('playsinline', 'true');
+      
+      const attemptPlay = () => {
+        video.play().catch(error => {
+          console.warn("Hero video autoplay failed:", error);
+        });
+      };
+
+      // Try playing immediately
+      attemptPlay();
+
+      // Fallback: Try again when metadata has loaded
+      video.addEventListener('loadedmetadata', attemptPlay);
+      return () => video.removeEventListener('loadedmetadata', attemptPlay);
     }
   }, []);
 
