@@ -1,3 +1,4 @@
+import { useRef, useEffect } from "react";
 /**
  * Homepage Component
  * - Displays the Hero section with background video
@@ -15,6 +16,17 @@ import Typewriter from 'typewriter-effect';
 import heroIllustration from "@/assets/hero-illustration.png";
 
 export default function Home() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Robust Autoplay for Mobile Browsers
+  useEffect(() => {
+    if (videoRef.current) {
+      // Explicitly call play to ensure it starts on mobile
+      videoRef.current.play().catch(error => {
+        console.warn("Hero video autoplay failed:", error);
+      });
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-white">
@@ -34,6 +46,7 @@ export default function Home() {
           - Positioned on the right with an opacity fade
         */}
         <video
+          ref={videoRef}
           src="/walk.mp4"
           autoPlay
           muted
