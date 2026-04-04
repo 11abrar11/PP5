@@ -3,6 +3,7 @@ import Tilt from "react-parallax-tilt";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
+import servicesHeader from "@/assets/services-header.png";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import {
@@ -376,7 +377,7 @@ export default function Services() {
       <PageHeader
         title="Creative & Digital Solutions Tailored for Impact"
         subtitle="From branding to animation, our services are designed to make your business stand out and succeed."
-        bgImage="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80"
+        bgImage={servicesHeader}
       />
 
       {/* ── Services Grid ── */}

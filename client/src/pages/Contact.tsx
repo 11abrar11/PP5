@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
+import contactHeader from "@/assets/contact-header.png";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -175,7 +176,7 @@ export default function Contact() {
       <PageHeader
         title="Let's Create Something Extraordinary"
         subtitle="Have a project in mind? We'd love to hear about it."
-        bgImage="https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80"
+        bgImage={contactHeader}
       />
 
       {/* ── Intro ── */}
@@ -310,7 +311,7 @@ export default function Contact() {
                           </FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="John Doe"
+                              placeholder="Full Name"
                               className="bg-white h-12 rounded-xl border-gray-200 focus:border-primary"
                               {...field}
                             />
@@ -330,7 +331,7 @@ export default function Contact() {
                           <FormControl>
                             <Input
                               type="email"
-                              placeholder="john@company.com"
+                              placeholder="Email Address"
                               className="bg-white h-12 rounded-xl border-gray-200 focus:border-primary"
                               {...field}
                             />
@@ -357,7 +358,7 @@ export default function Contact() {
                           <FormControl>
                             <Input
                               type="tel"
-                              placeholder="+91 98765 43210"
+                              placeholder="Phone Number"
                               className="bg-white h-12 rounded-xl border-gray-200 focus:border-primary"
                               {...field}
                             />
@@ -374,7 +375,7 @@ export default function Contact() {
                           <FormLabel>Company / Brand Name</FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="Acme Corp"
+                              placeholder="Company Name"
                               className="bg-white h-12 rounded-xl border-gray-200 focus:border-primary"
                               {...field}
                             />
@@ -421,7 +422,7 @@ export default function Contact() {
                         </FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Tell us about your project, timeline, and goals…"
+                            placeholder="Your Message"
                             className="bg-white min-h-[150px] rounded-xl resize-none border-gray-200 focus:border-primary"
                             {...field}
                           />

@@ -78,41 +78,58 @@ function PortfolioCard({ item, index, onOpen }: { item: PortfolioItem; index: nu
               </div>
               <span className="text-[10px] uppercase tracking-widest text-white/30 border border-white/10 rounded-full px-3 py-1">PDF Document</span>
             </div>
-          ) : item.video ? (
-            <div className="relative aspect-video sm:aspect-auto">
-              <video
-                src={item.image}
-                muted
-                loop
-                playsInline
-                className={`w-full h-auto object-cover transition-transform duration-500 ${hovered ? "scale-105" : "scale-100"}`}
-                ref={(el) => {
-                  if (el) hovered ? el.play().catch(() => { }) : el.pause();
-                }}
-              />
-              {/* Play badge always visible on video */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <motion.div
-                  animate={{ scale: hovered ? 1.15 : 1, opacity: hovered ? 1 : 0.85 }}
-                  transition={{ duration: 0.2 }}
-                  className="w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-2xl"
-                >
-                  <Play className="w-6 h-6 text-white ml-0.5" fill="white" />
-                </motion.div>
-              </div>
-            </div>
           ) : (
-            <div className="relative">
-              <img
-                src={item.thumbnail}
-                alt={item.title}
-                loading="lazy"
-                className={`w-full h-auto object-cover transition-transform duration-500 ${hovered ? "scale-105" : "scale-100"}`}
-              />
+            <div className="relative w-full h-full">
+              {/* Base Image/Video Layer - This defines the card's height */}
+              {item.video ? (
+                <video
+                  src={item.image}
+                  muted
+                  loop
+                  playsInline
+                  className={`w-full h-auto object-cover transition-transform duration-500 ${hovered ? "scale-105" : "scale-100"}`}
+                  ref={(el) => {
+                    if (el) hovered ? el.play().catch(() => { }) : el.pause();
+                  }}
+                />
+              ) : (
+                <img
+                  src={item.thumbnail || item.image}
+                  alt={item.title}
+                  loading="lazy"
+                  className={`w-full h-auto object-cover transition-transform duration-500 ${hovered ? "scale-105" : "scale-100"}`}
+                />
+              )}
+
+              {/* Interactive Iframe Layer (Added on hover for banners) */}
+              {item.iframeUrl && hovered && (
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="absolute inset-0 z-10 bg-white"
+                >
+                  <iframe
+                    src={item.iframeUrl}
+                    title={item.title}
+                    className="w-full h-full border-none pointer-events-none"
+                    sandbox="allow-scripts allow-same-origin"
+                  />
+                </motion.div>
+              )}
+
               {/* Fallback pattern background while loading */}
               <div className="absolute inset-0 -z-10 bg-gray-900 flex items-center justify-center">
                 <div className="w-8 h-8 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
               </div>
+
+              {/* Play badge for videos */}
+              {item.video && !hovered && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-14 h-14 rounded-full bg-primary/90 flex items-center justify-center shadow-2xl">
+                    <Play className="w-6 h-6 text-white ml-0.5" fill="white" />
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -142,11 +159,15 @@ function PortfolioCard({ item, index, onOpen }: { item: PortfolioItem; index: nu
               </span>
             ))}
           </div>
-          {/* Zoom / play icon */}
+          {/* Zoom / play / interactive icon */}
           <div className="absolute top-4 right-4">
             {item.video ? (
               <div className="w-8 h-8 rounded-full bg-primary/80 flex items-center justify-center">
                 <Play className="w-4 h-4 text-white ml-0.5" fill="white" />
+              </div>
+            ) : item.iframeUrl ? (
+              <div className="w-8 h-8 rounded-full bg-green-500/80 flex items-center justify-center" title="Interactive HTML5 Banner">
+                <ExternalLink className="w-4 h-4 text-white" />
               </div>
             ) : (
               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
@@ -246,6 +267,54 @@ function Lightbox({ item, items, onClose, onNav }: {
             >
               <ExternalLink size={14} /> Open in new tab
             </a>
+          </div>
+        </motion.div>
+      ) : item.iframeUrl ? (
+        // ── Interactive HTML5 lightbox ──────────────────────────────────────
+        <motion.div
+          key={item.id}
+          initial={{ scale: 0.92, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.92, opacity: 0 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          className="relative w-full max-w-5xl flex flex-col items-center gap-4"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div 
+            className="w-full bg-white rounded-2xl shadow-2xl border border-white/10 overflow-hidden flex items-center justify-center p-4 relative" 
+            style={{ height: '80vh' }}
+          >
+            <iframe
+              src={item.iframeUrl}
+              title={item.title}
+              className="w-full h-full border-none"
+              sandbox="allow-scripts allow-same-origin"
+            />
+          </div>
+          <div className="flex items-center gap-4">
+            <a
+              href={item.iframeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-5 py-2 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary/80 transition-colors"
+            >
+              <ExternalLink size={14} /> View Fullscreen
+            </a>
+          </div>
+
+          {/* Caption */}
+          <div className="mt-4 text-center">
+            {item.client && (
+              <p className="text-primary text-xs font-semibold uppercase tracking-widest mb-1">{item.client}</p>
+            )}
+            <h3 className="text-white font-bold text-lg">{item.title}</h3>
+            <div className="flex flex-wrap justify-center gap-2 mt-2">
+              {item.tags.map((tag) => (
+                <span key={tag} className="text-[11px] bg-white/10 text-white/70 border border-white/20 rounded-full px-2.5 py-0.5 uppercase tracking-wide">
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
         </motion.div>
       ) : (
@@ -355,10 +424,26 @@ export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [lightboxItem, setLightboxItem] = useState<PortfolioItem | null>(null);
 
+  /**
+   * Shuffle all portfolio items once when the page is loaded.
+   * Uses the Fisher-Yates algorithm for uniform randomness.
+   */
+  const shuffledItems = useMemo(() => {
+    const items = [...portfolioItems];
+    for (let i = items.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [items[i], items[j]] = [items[j], items[i]];
+    }
+    return items;
+  }, []);
+
+  /**
+   * Derives displaying items based on the active category filter.
+   */
   const filteredItems = useMemo(() => {
-    if (activeFilter === "all") return portfolioItems;
-    return portfolioItems.filter((i) => i.category === activeFilter);
-  }, [activeFilter]);
+    if (activeFilter === "all") return shuffledItems;
+    return shuffledItems.filter((i) => i.category === activeFilter);
+  }, [activeFilter, shuffledItems]);
 
   const handleNav = (dir: 1 | -1) => {
     if (!lightboxItem) return;

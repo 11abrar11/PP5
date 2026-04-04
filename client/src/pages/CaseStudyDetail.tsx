@@ -8,7 +8,7 @@ import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
 import { useParams } from "wouter";
 import { caseStudies } from "@/utils/case-studies";
-import { ArrowLeft, CheckCircle2, ChevronRight, X, ChevronLeft, ZoomIn } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ChevronRight, X, ChevronLeft, ZoomIn, FileText, ExternalLink } from "lucide-react";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
@@ -35,6 +35,9 @@ export default function CaseStudyDetail() {
         }
         return () => { document.body.style.overflow = "auto"; };
     }, [selectedImgIdx]);
+
+    // Helper to detect PDF assets
+    const isPdf = (url: string) => url.toLowerCase().endsWith('.pdf');
 
     // 404 Fallback if slug is invalid
     if (!study) {
@@ -181,15 +184,28 @@ export default function CaseStudyDetail() {
                                                     onClick={() => setSelectedImgIdx(i)}
                                                 >
                                                     <div className="relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm transition-all duration-500 group-hover:shadow-xl group-hover:border-primary/20 bg-gray-50">
-                                                        <img
-                                                            src={img}
-                                                            alt={`${study.client} work sample ${i + 1}`}
-                                                            loading="lazy"
-                                                            onLoad={(e) => {
-                                                                (e.target as HTMLImageElement).classList.remove('opacity-0');
-                                                            }}
-                                                            className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110 opacity-0 transition-opacity"
-                                                        />
+                                                        {isPdf(img) ? (
+                                                            // ── PDF Grid Tile ──
+                                                            <div className="w-full flex flex-col items-center justify-center gap-4 px-6 py-12 bg-gradient-to-br from-gray-900 to-gray-800 transition-transform duration-500 group-hover:scale-105 min-h-[220px]">
+                                                                <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center">
+                                                                    <FileText className="w-8 h-8 text-primary" />
+                                                                </div>
+                                                                <div className="text-center px-4">
+                                                                    <p className="text-white font-bold text-sm leading-snug line-clamp-2">PDF Document</p>
+                                                                    <span className="inline-block mt-2 text-[10px] uppercase tracking-widest text-primary/70 border border-primary/20 rounded-full px-3 py-1">View Publication</span>
+                                                                </div>
+                                                            </div>
+                                                        ) : (
+                                                            <img
+                                                                src={img}
+                                                                alt={`${study.client} work sample ${i + 1}`}
+                                                                loading="lazy"
+                                                                onLoad={(e) => {
+                                                                    (e.target as HTMLImageElement).classList.remove('opacity-0');
+                                                                }}
+                                                                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110 opacity-0 transition-opacity"
+                                                            />
+                                                        )}
                                                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-500 flex items-center justify-center">
                                                             <motion.div
                                                                 initial={{ opacity: 0, scale: 0.5 }}
@@ -286,16 +302,43 @@ export default function CaseStudyDetail() {
                             className="relative max-w-7xl max-h-[85vh] w-full flex flex-col items-center"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <img
-                                src={study.gallery?.[selectedImgIdx]}
-                                alt="Work sample"
-                                className="w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
-                            />
+                            {isPdf(study.gallery?.[selectedImgIdx] || '') ? (
+                                <div className="w-full bg-white rounded-lg overflow-hidden shadow-2xl relative" style={{ height: '80vh' }}>
+                                    <iframe
+                                        src={study.gallery?.[selectedImgIdx]}
+                                        title="PDF Preview"
+                                        className="w-full h-full border-none"
+                                    />
+                                    {/* Mobile helper overlay */}
+                                    <div className="absolute bottom-4 right-4 md:hidden pointer-events-none">
+                                        <div className="p-3 bg-primary rounded-full shadow-xl">
+                                            <FileText className="text-white" size={20} />
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <img
+                                    src={study.gallery?.[selectedImgIdx]}
+                                    alt="Work sample"
+                                    className="w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
+                                />
+                            )}
                             <div className="mt-6 text-center">
                                 <p className="text-white/60 text-sm font-medium uppercase tracking-[0.2em] mb-1">{study.client}</p>
                                 <h3 className="text-white text-xl font-bold font-display">{study.title}</h3>
                                 <p className="text-white/40 text-xs mt-2">
-                                    Sample {selectedImgIdx + 1} of {study.gallery?.length}
+                                    Sample {selectedImgIdx + 1} of {study.gallery?.length} 
+                                    {isPdf(study.gallery?.[selectedImgIdx] || '') && (
+                                        <a 
+                                            href={study.gallery?.[selectedImgIdx]} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer" 
+                                            className="ml-2 underline text-primary hover:text-white transition-colors"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            View Full PDF
+                                        </a>
+                                    )}
                                 </p>
                             </div>
                         </motion.div>

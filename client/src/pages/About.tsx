@@ -8,6 +8,7 @@ import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { motion } from "framer-motion";
 import { Lightbulb, Heart, Star, Zap } from "lucide-react";
+import aboutIllustration from "@/assets/about-illustration.png";
 
 /**
  * Data for Core Values section
@@ -222,7 +223,7 @@ export default function About() {
             >
               <div className="relative rounded-2xl overflow-hidden shadow-xl group bg-gray-100">
                 <img
-                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80"
+                  src={aboutIllustration}
                   alt="PP5 team collaborating"
                   loading="lazy"
                   onLoad={(e) => {

@@ -12,6 +12,8 @@ import { ArrowRight, CheckCircle2, Zap } from "lucide-react";
 import { Link } from "wouter";
 import Typewriter from 'typewriter-effect';
 
+import heroIllustration from "@/assets/hero-illustration.png";
+
 export default function Home() {
 
   return (
@@ -24,7 +26,7 @@ export default function Home() {
         - Uses a typewriter effect for the main headline
         - Interactive buttons for navigation
       */}
-      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-black">
+      <section className="relative min-h-screen flex items-center pt-20 pb-16 md:pb-0 overflow-hidden bg-black">
 
         {/* 
           Background Video 
@@ -88,7 +90,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-xl text-gray-400 mb-10 max-w-2xl leading-relaxed"
+              className="text-xl text-gray-400 mb-8 md:mb-10 max-w-2xl leading-relaxed"
             >
               PP5 is a premier advertising agency specializing in design, technology, and strategy. We transform brands into industry leaders through innovative digital solutions.
             </motion.p>
@@ -240,7 +242,7 @@ export default function Home() {
             <div className="lg:w-1/2 relative">
               <div className="relative z-10 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
                 <img
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80"
+                  src={heroIllustration}
                   alt="Team collaboration"
                   loading="lazy"
                   className="w-full h-auto transform hover:scale-105 transition-transform duration-700"

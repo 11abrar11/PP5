@@ -7,8 +7,10 @@ export interface PortfolioItem {
   tags: string[];
   title: string;
   hoverText?: string;
+  icon?: string; // Optional icon for special types
   video?: boolean;
   pdf?: boolean;
+  iframeUrl?: string; // For HTML5 interactive banners
 }
 
 // Base paths
@@ -67,15 +69,7 @@ export const portfolioItems: PortfolioItem[] = [
     tags: ['GIF', 'Animation', 'Social'],
     title: 'Google PM Certification',
   },
-  {
-    id: 's-ms-powerpoint',
-    category: 'social',
-    thumbnail: `${O}/social/Microsoft_Powerpoint.gif`,
-    image: `${O}/social/Microsoft_Powerpoint.gif`,
-    client: 'Goodwill Dallas',
-    tags: ['GIF', 'Animation', 'Social'],
-    title: 'Microsoft PowerPoint Tips',
-  },
+
   {
     id: 's-ms-word',
     category: 'social',
@@ -250,6 +244,45 @@ export const portfolioItems: PortfolioItem[] = [
 
   // ══ BANNER ADS ═════════════════════════════════════════════════════════════
   {
+    id: 'b-steak-express',
+    category: 'banners',
+    thumbnail: `${O}/banners/steak-express/300x250.jpg`,
+    image: `${O}/banners/steak-express/300x250.jpg`,
+    iframeUrl: `${O}/banners/steak-express/index.html`,
+    client: 'Steak Express',
+    tags: ['Banner', 'HTML5', 'Interactive'],
+    title: 'Interactive Steak Express Banner',
+  },
+  {
+    id: 'b-sacmc',
+    category: 'banners',
+    thumbnail: `${O}/banners/sacmc/300x600.jpg`,
+    image: `${O}/banners/sacmc/300x600.jpg`,
+    iframeUrl: `${O}/banners/sacmc/index1.html`,
+    client: 'SACMC',
+    tags: ['Banner', 'HTML5', 'Interactive'],
+    title: 'SACMC Medical Center Banner',
+  },
+  {
+    id: 'b-enertel',
+    category: 'banners',
+    thumbnail: `${O}/banners/enertel/300x600.jpg`,
+    image: `${O}/banners/enertel/300x600.jpg`,
+    iframeUrl: `${O}/banners/enertel/index3.html`,
+    client: 'Ener-Tel',
+    tags: ['Banner', 'HTML5', 'Interactive'],
+    title: 'Ener-Tel Security Banner',
+  },
+  {
+    id: 'b-collection-cover',
+    category: 'banners',
+    thumbnail: `${O}/banners/Coverpage.jpg`,
+    image: `${O}/banners/Coverpage.jpg`,
+    client: 'Various Clients',
+    tags: ['Collection', 'Digital', 'Portfolio'],
+    title: 'Banner Ad Design Collection',
+  },
+  {
     id: 'b-dfw-memorial',
     category: 'banners',
     thumbnail: `${O}/banners/banner1.jpg`,
@@ -259,23 +292,25 @@ export const portfolioItems: PortfolioItem[] = [
     title: 'DFW Memorial Day Banner',
   },
   {
-    id: 'b-dfw-display',
+    id: 'b-dfw-digital',
     category: 'banners',
-    thumbnail: `${O}/banners/banner2.jpg`,
-    image: `${O}/banners/banner2.jpg`,
+    thumbnail: `${O}/banners/DD.jpg`,
+    image: `${O}/banners/DD.jpg`,
     client: 'DFW Airport',
-    tags: ['Banner', 'HTML5', 'Digital'],
-    title: 'DFW Display Banner',
+    tags: ['Banner', 'Digital', 'Ad'],
+    title: 'DFW Digital Advertisement',
   },
   {
-    id: 'b-enertel',
+    id: 'b-dfw-mobile-ad',
     category: 'banners',
-    thumbnail: `${O}/banners/banner3.jpg`,
-    image: `${O}/banners/banner3.jpg`,
-    client: 'Ener-Tel',
-    tags: ['Banner', 'Digital'],
-    title: 'Ener-Tel Security Banner',
+    thumbnail: `${O}/banners/d.jpg`,
+    image: `${O}/banners/d.jpg`,
+    client: 'DFW Airport',
+    tags: ['Banner', 'Mobile', 'Ad'],
+    title: 'DFW Mobile Banner Ad',
   },
+
+
   {
     id: 'b-grand-city',
     category: 'banners',
@@ -360,16 +395,7 @@ export const portfolioItems: PortfolioItem[] = [
     title: 'Digital Skills Brochure',
     pdf: true,
   },
-  {
-    id: 'f-naf-logo',
-    category: 'flyers',
-    thumbnail: '',
-    image: `${O}/flyers/Now and Forever Logo.pdf`,
-    client: 'Now and Forever',
-    tags: ['Print', 'Logo', 'PDF'],
-    title: 'Now and Forever – Logo',
-    pdf: true,
-  },
+
   {
     id: 'f-naf-print',
     category: 'flyers',
@@ -390,24 +416,8 @@ export const portfolioItems: PortfolioItem[] = [
     title: 'Goodwill Brand Collateral',
     pdf: true,
   },
-  {
-    id: 'f-advocate',
-    category: 'flyers',
-    thumbnail: `${O}/flyers/flyer1.jpg`,
-    image: `${O}/flyers/flyer1.jpg`,
-    client: 'Goodwill Dallas',
-    tags: ['Flyer', 'Print', 'Event'],
-    title: 'Advocate Sponsor Flyer',
-  },
-  {
-    id: 'f-champion',
-    category: 'flyers',
-    thumbnail: `${O}/flyers/flyer2.jpg`,
-    image: `${O}/flyers/flyer2.jpg`,
-    client: 'Goodwill Dallas',
-    tags: ['Flyer', 'Print', 'Event'],
-    title: 'Champion Sponsor Flyer',
-  },
+
+
 
   // ══ E-BLASTS ═══════════════════════════════════════════════════════════════
   {
@@ -437,26 +447,70 @@ export const portfolioItems: PortfolioItem[] = [
     tags: ['Email', 'E-blast', 'CTA'],
     title: 'Donation Drive Email',
   },
-  {
-    id: 'e-header',
-    category: 'eblast',
-    thumbnail: `${O}/eblast/header.gif`,
-    image: `${O}/eblast/header.gif`,
-    client: 'Goodwill Dallas',
-    tags: ['Email', 'E-blast', 'Animated'],
-    title: 'Animated Email Header',
-  },
+
 
   // ══ MAGAZINE ═══════════════════════════════════════════════════════════════
   {
-    id: 'm-presenting',
+    id: 'm-akash-vukoti',
     category: 'magazine',
-    thumbnail: `${O}/magazine/mag1.jpg`,
-    image: `${O}/magazine/mag1.jpg`,
-    client: 'Goodwill Dallas',
-    tags: ['Magazine', 'Print', 'Ad'],
-    title: 'Presenting Sponsor Ad',
+    thumbnail: '',
+    image: `${O}/magazine/Create Magazine_2019_Akash Vukoti.pdf`,
+    client: 'Akash Vukoti',
+    tags: ['Magazine', 'Print', 'PDF'],
+    title: 'Create Magazine – Akash Vukoti',
+    pdf: true,
   },
+  {
+    id: 'm-angelo-civic',
+    category: 'magazine',
+    thumbnail: '',
+    image: `${O}/magazine/Create Magazine_2019_Angelo Civic Theatre.pdf`,
+    client: 'Angelo Civic Theatre',
+    tags: ['Magazine', 'Print', 'PDF'],
+    title: 'Create Magazine – Angelo Civic Theatre',
+    pdf: true,
+  },
+  {
+    id: 'm-dusty-mccoy',
+    category: 'magazine',
+    thumbnail: '',
+    image: `${O}/magazine/Create Magazine_2019_Dusty McCoy.pdf`,
+    client: 'Dusty McCoy',
+    tags: ['Magazine', 'Print', 'PDF'],
+    title: 'Create Magazine – Dusty McCoy',
+    pdf: true,
+  },
+  {
+    id: 'm-rene-alvarado',
+    category: 'magazine',
+    thumbnail: '',
+    image: `${O}/magazine/Create Magazine_2019_Rene Alvarado.pdf`,
+    client: 'Rene Alvarado',
+    tags: ['Magazine', 'Print', 'PDF'],
+    title: 'Create Magazine – Rene Alvarado',
+    pdf: true,
+  },
+  {
+    id: 'm-river-view',
+    category: 'magazine',
+    thumbnail: '',
+    image: `${O}/magazine/Create Magazine_2019_River view restaurant.pdf`,
+    client: 'River View Restaurant',
+    tags: ['Magazine', 'Print', 'PDF'],
+    title: 'Create Magazine – River View Restaurant',
+    pdf: true,
+  },
+  {
+    id: 'm-rogue-cafe',
+    category: 'magazine',
+    thumbnail: '',
+    image: `${O}/magazine/Create Magazine_2019_Rogue Café.pdf`,
+    client: 'Rogue Café',
+    tags: ['Magazine', 'Print', 'PDF'],
+    title: 'Create Magazine – Rogue Café',
+    pdf: true,
+  },
+
   {
     id: 'm-awareness',
     category: 'magazine',

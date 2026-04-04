@@ -19,15 +19,15 @@ export const caseStudies: CaseStudy[] = [
         id: '1',
         slug: 'dfw-airport-parking',
         title: 'Creative Marketing Collateral for DFW Airport Parking',
-        client: 'DFW Airport Parking (via U.S. Marketing Agency)',
+        client: 'DFW Airport Parking (via ABI - Alpha Business Images)',
         category: 'Digital Banners & Motion Graphics',
         description: 'A series of highly engaging static and animated marketing collateral for one of the largest and busiest airport parking facilities in the United States — delivered at scale with a fast turnaround.',
-        theAsk: 'The client approached PP5 Media Solutions to develop a series of highly engaging marketing collateral for DFW Airport Parking. The requirement included static and animated digital banners, creative assets for seasonal promotions, loyalty campaigns, and limited-time offers — all aligned with DFW\'s brand guidelines while maintaining high visual impact and consistency across channels, with fast turnaround to meet time-sensitive campaign launches.',
+        theAsk: 'The client, ABI (Alpha Business Images), approached PP5 Media Solutions to develop a series of highly engaging marketing collateral for DFW Airport Parking. The requirement included static and animated digital banners, creative assets for seasonal promotions, loyalty campaigns, and limited-time offers — all aligned with DFW\'s brand guidelines while maintaining high visual impact and consistency across channels, with fast turnaround to meet time-sensitive campaign launches.',
         solutionIntro: 'PP5 Media Solutions assembled a dedicated creative team of designers and motion graphic specialists to deliver a seamless experience:',
         solutionPoints: [
             'Brand Deep-Dive: Studied DFW\'s branding guidelines and past campaigns to ensure alignment with tone, color palette, and messaging.',
             'Design Execution: Produced a suite of static banners, GIFs, and animated HTML5 banners optimized for performance across web and mobile platforms.',
-            'Agile Collaboration: Maintained a 24×5 communication channel with the U.S. agency team via email, Skype, and shared cloud folders to enable real-time feedback and revisions.',
+            'Agile Collaboration: Maintained a 24×5 communication channel with the ABI (Alpha Business Images) team via email, Skype, and shared cloud folders to enable real-time feedback and revisions.',
             'Quality Assurance: Conducted thorough design and animation quality checks to ensure pixel-perfect output and cross-platform compatibility.',
         ],
         results: [
@@ -38,10 +38,10 @@ export const caseStudies: CaseStudy[] = [
         ],
         image: '/dfw_case_study_hero.png',
         gallery: [
+            '/portfolio/optimized/banners/DD.jpg',
+            '/portfolio/optimized/banners/d.jpg',
             '/portfolio/optimized/banners/banner1.jpg',
-            '/portfolio/optimized/banners/banner2.jpg',
-            '/portfolio/optimized/banners/banner3.jpg',
-            '/portfolio/optimized/banners/hoarding.jpg',
+            '/portfolio/optimized/social/DFW_Christmas_600x600.gif',
         ],
     },
     {
@@ -67,10 +67,10 @@ export const caseStudies: CaseStudy[] = [
         ],
         image: '/goodwill_case_study_hero.png',
         gallery: [
-            '/portfolio/optimized/flyers/flyer1.jpg',
-            '/portfolio/optimized/flyers/flyer2.jpg',
-            '/portfolio/optimized/eblast/donate.jpg',
-            '/portfolio/optimized/social/post1.jpg',
+            '/portfolio/optimized/social/23.png',
+            '/portfolio/optimized/banners/Coverpage.jpg',
+            '/portfolio/optimized/eblast/eblast1.gif',
+            '/portfolio/optimized/flyers/Goodwill_02_JPFeedback.pdf',
         ],
     },
 ];
