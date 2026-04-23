@@ -1,11 +1,9 @@
 /**
  * Main Application Component
- * - Configures Global Providers (QueryClient, Tooltip, Toaster)
+ * - Configures Global Providers (Tooltip, Toaster)
  * - Defines the Client-Side Router and Page Transitions
  */
 import { Switch, Route } from "wouter";
-import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
@@ -68,16 +66,14 @@ function Router() {
  */
 function App() {
   return (
-    // handles API data fetching and caching
-    <QueryClientProvider client={queryClient}>
-      {/* enables hover tooltips across the app */}
-      <TooltipProvider>
-        {/* enables toast notifications (popups) */}
-        <Toaster />
-        <Router />
-      </TooltipProvider>
-    </QueryClientProvider>
+    /* enables hover tooltips across the app */
+    <TooltipProvider>
+      {/* enables toast notifications (popups) */}
+      <Toaster />
+      <Router />
+    </TooltipProvider>
   );
 }
 
 export default App;
+

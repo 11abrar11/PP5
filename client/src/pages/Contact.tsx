@@ -5,18 +5,16 @@ import contactHeader from "@/assets/contact-header.png";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
+import emailjs from "@emailjs/browser";
 import {
   MapPin,
   Mail,
   Phone,
   Loader2,
-  CheckCircle2,
   AlertCircle,
-  Paperclip,
-  X,
   ArrowRight,
 } from "lucide-react";
 import {
@@ -29,6 +27,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+
+// ─── EmailJS Configuration ────────────────────────────────────────────────────
+/**
+ * These values come from your EmailJS dashboard.
+ * Set them in your .env file as VITE_EMAILJS_* variables.
+ * Vite exposes env vars prefixed with VITE_ to the client.
+ */
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "";
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "";
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "";
 
 // ─── Validation Schema ────────────────────────────────────────────────────────
 /**
@@ -65,8 +73,8 @@ const contactInfo = [
   {
     icon: Mail,
     label: "Email Us",
-    content: "support@pp5mediasolutions.com",
-    href: "mailto:support@pp5mediasolutions.com",
+    content: "farooq@pp5mediasolutions.com",
+    href: "mailto:farooq@pp5mediasolutions.com",
   },
   {
     icon: Phone,
@@ -78,15 +86,13 @@ const contactInfo = [
 
 /**
  * Contact Page Component
- * - Manages the complex multi-input form with file attachments
- * - Handles API submission for database logging
- * - Provides a fallback for EmailJS integration
+ * - Manages the multi-input contact form
+ * - Sends inquiries directly via EmailJS (no server required)
+ * - Provides user-friendly Toast notifications for success/error
  */
 export default function Contact() {
   const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [attachedFile, setAttachedFile] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const form = useForm<ContactFormData>({
@@ -102,70 +108,46 @@ export default function Contact() {
     mode: "onTouched",
   });
 
-  // ── Attachment Handling Logic ──────────────────────────────────────────────
-
-  /**
-   * Processes the selected file for the 'attachment' field.
-   * Ensures only one file is handled at a time for this inquiry.
-   */
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      setAttachedFile(e.target.files[0]);
-    }
-  };
-
-  /**
-   * Clears the current attachment state.
-   */
-  const removeFile = () => {
-    setAttachedFile(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
-
   /**
    * Main Form Submission Handler
-   * 1. Constructs FormData for multipart submission
-   * 2. Attempts to log inquiry via backend API /api/inquiries
-   * 3. Handles success/error states with user-friendly Toast notifications
+   * Sends the inquiry directly to your email via EmailJS.
+   * No backend server required — EmailJS handles SMTP from their infrastructure.
    */
   const onSubmit = async (data: ContactFormData) => {
     setStatus("sending");
+    setErrorMessage(null);
     try {
-      const formData = new FormData();
-      Object.entries(data).forEach(([key, value]) => {
-        if (value) formData.append(key, value);
-      });
-      if (attachedFile) {
-        formData.append("attachment", attachedFile);
-      }
+      // Build the template parameters that map to your EmailJS template variables
+      const templateParams = {
+        from_name: data.name,
+        from_email: data.email,
+        phone: data.phone || "Not provided",
+        company: data.company || "Not provided",
+        project_type: data.projectType || "Not specified",
+        message: data.message,
+      };
 
-      // Assuming apiRequest and api.inquiries.create.path are defined elsewhere or mocked for this example
-      // For this example, we'll use the original fetch call structure but with the new state and toast logic
-      const res = await fetch("/api/inquiries", {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error((err as any).message || "Failed to send inquiry");
-      }
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_PUBLIC_KEY,
+      );
 
       toast({
         title: "Inquiry Sent Successfully!",
         description: "Thank you for reaching out. Our team will get back to you shortly.",
       });
       form.reset();
-      setAttachedFile(null);
       setStatus("idle");
     } catch (error: any) {
-      console.error("Submission error:", error);
+      console.error("EmailJS submission error:", error);
       setStatus("error");
+      setErrorMessage(error?.text || error?.message || "Something went wrong. Please try again or email us directly.");
       toast({
         variant: "destructive",
         title: "Error Sending Message",
-        description: error.message || "Something went wrong. Please try again or email us directly.",
+        description: error?.text || error?.message || "Something went wrong. Please try again or email us directly.",
       });
     }
   };
@@ -283,10 +265,10 @@ export default function Contact() {
                     <p className="text-red-500 text-xs mt-2">
                       If the issue persists, email us at{" "}
                       <a
-                        href="mailto:support@pp5mediasolutions.com"
+                        href="mailto:farooq@pp5mediasolutions.com"
                         className="underline"
                       >
-                        support@pp5mediasolutions.com
+                        farooq@pp5mediasolutions.com
                       </a>
                     </p>
                   </div>
@@ -432,51 +414,6 @@ export default function Contact() {
                     )}
                   />
 
-                  {/* Row 5: File Upload */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Attachment{" "}
-                      <span className="text-gray-400 font-normal text-xs">
-                        (Brief, references or documents)
-                      </span>
-                    </label>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      id="file-upload"
-                      className="hidden"
-                      accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png,.zip"
-                      onChange={handleFileChange}
-                    />
-
-                    {attachedFile ? (
-                      <div className="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-primary/30 text-sm">
-                        <Paperclip size={16} className="text-primary shrink-0" />
-                        <span className="text-gray-700 flex-1 truncate">
-                          {attachedFile.name}
-                        </span>
-                        <span className="text-gray-400 shrink-0">
-                          ({(attachedFile.size / 1024).toFixed(0)} KB)
-                        </span>
-                        <button
-                          type="button"
-                          onClick={removeFile}
-                          className="text-gray-400 hover:text-red-500 transition-colors shrink-0"
-                        >
-                          <X size={16} />
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="w-full py-4 px-6 border-2 border-dashed border-gray-200 rounded-xl text-gray-500 hover:border-primary/40 hover:text-primary hover:bg-primary/5 transition-all duration-200 flex items-center justify-center gap-2 text-sm font-medium"
-                      >
-                        <Paperclip size={16} />
-                        Click to attach a file
-                      </button>
-                    )}
-                  </div>
 
                   {/* Submit */}
                   <button
