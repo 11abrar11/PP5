@@ -153,7 +153,7 @@ export default function Home() {
       <section className="py-12 border-b border-gray-100 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center md:justify-between items-center gap-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-            {['Goodwill', 'ABI', 'Moto Media Marketing', 'Grace Media', 'DFW Airport'].map((client, i) => (
+            {['Goodwill', 'ABI', 'Media Marketing', 'Grace Media', 'DFW Airport'].map((client, i) => (
               <span key={i} className="text-2xl font-bold font-display text-gray-400">{client}</span>
             ))}
           </div>
