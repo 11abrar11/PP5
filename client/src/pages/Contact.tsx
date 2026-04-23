@@ -118,6 +118,8 @@ export default function Contact() {
     setErrorMessage(null);
     try {
       // Build the template parameters that map to your EmailJS template variables
+      // We send a pre-formatted local timestamp because EmailJS's built-in
+      // {{time}} variable uses UTC, which doesn't match IST.
       const templateParams = {
         from_name: data.name,
         from_email: data.email,
@@ -125,6 +127,11 @@ export default function Contact() {
         company: data.company || "Not provided",
         project_type: data.projectType || "Not specified",
         message: data.message,
+        submitted_at: new Date().toLocaleString("en-IN", {
+          timeZone: "Asia/Kolkata",
+          dateStyle: "medium",
+          timeStyle: "short",
+        }),
       };
 
       await emailjs.send(
