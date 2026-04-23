@@ -73,8 +73,8 @@ const contactInfo = [
   {
     icon: Mail,
     label: "Email Us",
-    content: "farooq@pp5mediasolutions.com",
-    href: "mailto:farooq@pp5mediasolutions.com",
+    content: "support@pp5mediasolutions.com",
+    href: "mailto:support@pp5mediasolutions.com",
   },
   {
     icon: Phone,
@@ -265,10 +265,10 @@ export default function Contact() {
                     <p className="text-red-500 text-xs mt-2">
                       If the issue persists, email us at{" "}
                       <a
-                        href="mailto:farooq@pp5mediasolutions.com"
+                        href="mailto:support@pp5mediasolutions.com"
                         className="underline"
                       >
-                        farooq@pp5mediasolutions.com
+                        support@pp5mediasolutions.com
                       </a>
                     </p>
                   </div>
