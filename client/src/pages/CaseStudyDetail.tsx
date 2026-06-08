@@ -12,6 +12,7 @@ import { ArrowLeft, CheckCircle2, ChevronRight, X, ChevronLeft, ZoomIn, FileText
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
+import { SEO } from "@/components/SEO";
 
 export default function CaseStudyDetail() {
     const params = useParams();
@@ -59,6 +60,11 @@ export default function CaseStudyDetail() {
 
     return (
         <div className="min-h-screen bg-white">
+            <SEO
+                title={study.title}
+                description={study.description}
+                canonical={`/case-study/${study.slug}`}
+            />
             <Navbar variant="dark-text" />
 
             {/* ── Hero Section (Full-width background image) ── */}

@@ -19,6 +19,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useDeviceFeatures } from "@/hooks/useDeviceFeatures";
+import { SEO } from "@/components/SEO";
 
 /**
  * Static Rich Content Data
@@ -373,6 +374,12 @@ export default function Services() {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title="Creative & Digital Solutions Tailored for Impact"
+        description="Explore PP5 Media Solutions' full range of creative services: design retainership, brand identity, print & digital design, animation, digitization, and BPO services. Tailored for marketing teams, agencies, and growing brands."
+        canonical="/services"
+        keywords="design services, brand identity, graphic design, animation, digitization, BPO, creative agency services, PP5"
+      />
       <Navbar />
       <PageHeader
         title="Creative & Digital Solutions Tailored for Impact"

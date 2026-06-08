@@ -14,6 +14,7 @@ import { Link } from "wouter";
 import Typewriter from 'typewriter-effect';
 
 import heroIllustration from "@/assets/hero-illustration.png";
+import { SEO } from "@/components/SEO";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -45,6 +46,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title="PP5 Media Solutions | Premier Creative & Digital Agency"
+        description="PP5 is a premier advertising agency specializing in design, technology, and strategy. We transform brands into industry leaders through innovative digital solutions. Based in Bangalore, serving clients worldwide."
+        canonical="/"
+        keywords="creative agency, digital agency, branding, graphic design, advertising, Bangalore, PP5 Media Solutions"
+      />
       <Navbar />
 
       {/* 

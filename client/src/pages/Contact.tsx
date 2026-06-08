@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { SEO } from "@/components/SEO";
 
 // ─── EmailJS Configuration ────────────────────────────────────────────────────
 /**
@@ -161,6 +162,12 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title="Contact Us — Let's Create Something Extraordinary"
+        description="Get in touch with PP5 Media Solutions. Have a project in mind? Whether it's branding, web design, video production, or marketing — we'd love to hear about it. Based in Bangalore, available 24/5."
+        canonical="/contact"
+        keywords="contact PP5 Media Solutions, hire creative agency, branding inquiry, design project, Bangalore agency contact"
+      />
       <Navbar />
       <PageHeader
         title="Let's Create Something Extraordinary"

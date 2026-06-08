@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { portfolioItems } from "@/utils/portfolio";
 import type { PortfolioItem } from "@/utils/portfolio";
 import { Play, X, ZoomIn, ChevronLeft, ChevronRight, FileText, ExternalLink } from "lucide-react";
+import { SEO } from "@/components/SEO";
 
 // ─── Filter categories ────────────────────────────────────────────────────────
 /**
@@ -454,6 +455,12 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
+      <SEO
+        title="Our Work & Portfolio — Creative Excellence in Action"
+        description="Explore PP5 Media Solutions' portfolio of creative work spanning social media design, video production, banner ads, packaging, flyers, e-blasts, and magazine layouts for clients like DFW Airport, Goodwill Dallas, and more."
+        canonical="/portfolio"
+        keywords="creative portfolio, design portfolio, banner ads, video production, social media design, packaging design, PP5 Media Solutions"
+      />
       <Navbar variant="dark-text" stickyVariant="dark" />
 
       <HeroStrip />

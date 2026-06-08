@@ -9,6 +9,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { motion } from "framer-motion";
 import { Lightbulb, Heart, Star, Zap } from "lucide-react";
 import aboutIllustration from "@/assets/about-illustration.png";
+import { SEO } from "@/components/SEO";
 
 /**
  * Data for Core Values section
@@ -40,6 +41,12 @@ const coreValues = [
 export default function About() {
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title="About Us — Designing Experiences, Building Brands, Driving Impact"
+        description="PP5 Media Solutions is a multidisciplinary creative and technology agency founded in 2018, headquartered in Bangalore. We deliver branding, design, and digital services to clients worldwide including DFW Airport and Goodwill Dallas."
+        canonical="/about"
+        keywords="about PP5 Media Solutions, creative agency Bangalore, digital agency India, branding agency, design team"
+      />
       <Navbar />
 
       {/* 
