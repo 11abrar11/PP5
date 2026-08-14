@@ -46,7 +46,7 @@ const servicesData = [
     bestFor: "Marketing teams, agencies, growing brands",
     caseSnippet: {
       client: "DFW Airport Parking",
-      text: "Produced 400+ creative assets — static and animated HTML5 banners — achieving a significant CTR boost. The client praised our turnaround time and visual creativity, leading to an ongoing retainership.",
+      text: "Produced 1000+ creative assets — static and animated HTML5 banners — achieving a significant CTR boost. The client praised our turnaround time and visual creativity, leading to an ongoing retainership.",
     },
   },
   {

@@ -31,7 +31,7 @@ export const caseStudies: CaseStudy[] = [
             'Quality Assurance: Conducted thorough design and animation quality checks to ensure pixel-perfect output and cross-platform compatibility.',
         ],
         results: [
-            '400+ creative assets delivered across multiple campaign cycles',
+            '1000+ creative assets delivered across multiple campaign cycles',
             'Significant boost in click-through rates (CTR) vs. previous static creatives',
             'Client praised turnaround time, visual creativity, and quality of execution',
             'Ongoing retainership secured after initial campaign success',
