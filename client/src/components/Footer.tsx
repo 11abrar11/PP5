@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { MapPin, Mail, Phone } from "lucide-react";
+import { MapPin, Mail } from "lucide-react";
 import logoFull from "@assets/logo-white.svg";
 
 export function Footer() {
@@ -61,6 +61,7 @@ export function Footer() {
               <li className="flex items-center gap-3 text-gray-400">
                 <Mail className="text-primary shrink-0" size={18} />
                 <a href="mailto:support@pp5mediasolutions.com" className="hover:text-white text-sm">support@pp5mediasolutions.com</a>
+              </li>
             </ul>
           </div>
 

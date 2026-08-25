@@ -12,7 +12,6 @@ import emailjs from "@emailjs/browser";
 import {
   MapPin,
   Mail,
-  Phone,
   Loader2,
   AlertCircle,
   ArrowRight,
@@ -76,6 +75,7 @@ const contactInfo = [
     label: "Email Us",
     content: "support@pp5mediasolutions.com",
     href: "mailto:support@pp5mediasolutions.com",
+  }
 ];
 
 /**
