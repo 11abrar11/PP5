@@ -76,13 +76,6 @@ const contactInfo = [
     label: "Email Us",
     content: "support@pp5mediasolutions.com",
     href: "mailto:support@pp5mediasolutions.com",
-  },
-  {
-    icon: Phone,
-    label: "Call Us",
-    content: "+91 93433 85042",
-    href: "tel:+919343385042",
-  },
 ];
 
 /**
