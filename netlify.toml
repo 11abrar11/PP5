@@ -65,3 +65,8 @@
   [headers.values]
     Cache-Control = "public, max-age=3600"
     Content-Type = "text/plain"
+
+# Intercept AI bots and serve pre-rendered text
+[[edge_functions]]
+  function = "ai-bot-interceptor"
+  path = "/*"
